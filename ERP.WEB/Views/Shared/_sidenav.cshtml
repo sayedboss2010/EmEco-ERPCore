@@ -12,45 +12,14 @@
     //rolesid => 1=HR 2=stocks
     var roleid = Context.Request.Cookies.FirstOrDefault(c => c.Key == "UserRule").Value;
 
-    var title = lang == "ar" ? "منظومة تخطيط الموارد" : "ERP System";
+    var title = lang == "ar" ? "منظومة الصيانة الوقائية" : "ERP System";
     if (!string.IsNullOrEmpty(roleid))
     {
         if (roleid == "1")
         {
             title = lang == "ar" ? "المخازن" : "Stockes";
         }
-        else if (roleid == "2")
-        {
-            title = lang == "ar" ? "القسم الهندسي" : "Engineer";
-        }
-        else if (roleid == "3")
-        {
-            title = lang == "ar" ? "الموارد البشرية" : "Human Resources";
-        }
-        else if (roleid == "4")
-        {
-            title = lang == "ar" ? "الحسابات" : "Accounting";
-        }
-        else if (roleid == "5")
-        {
-            title = lang == "ar" ? "الخزنة" : "Treasury";
-        }
-        else if (roleid == "7")
-        {
-            title = lang == "ar" ? "إدخال بيانات" : "DataEntry";
-        }
-        else if (roleid == "8")
-        {
-            title = lang == "ar" ? "المشروعات" : "Tender";
-        }
-        else if (roleid == "9")
-        {
-            title = lang == "ar" ? "المشتريات" : "Purchase";
-        }
-        else if (roleid == "10")
-        {
-            title = lang == "ar" ? "البوالص" : "Bills";
-        }
+  
     }
 }
 
@@ -108,96 +77,8 @@
                                         <span class="nav-link-text ms-1">@(lang == "ar" ? "الكليات" : "Faculties")</span>
                                     </a>
                                 </li>
-                                <li class="nav-item opacity-75">
-                                    <a class="nav-link text-white  @Html.isActive("Index", "Country")"
-                                       href="@Url.Action("Index", "Country", new { area = "" })">
-                                        <div class="text-white text-center ms-2 d-flex align-items-center justify-content-center">
-                                            <i class="material-icons opacity-10">emoji_transportation</i>&nbsp;
-                                        </div>
-                                        <span class="nav-link-text ms-1">@(lang == "ar" ? "الدول" : "Country")</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item opacity-75">
-                                    <a class="nav-link text-white  @Html.isActive("Index", "LeaveType")"
-                                       href="@Url.Action("Index", "LeaveType", new { area = "" })">
-                                        <div class="text-white text-center ms-2 d-flex align-items-center justify-content-center">
-                                            <i class="material-icons opacity-10">beach_access</i>&nbsp;
-                                        </div>
-                                        <span class="nav-link-text ms-1">@(lang == "ar" ? "الاجازات" : "LeaveType")</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item opacity-75">
-                                    <a class="nav-link text-white  @Html.isActive("Index", "ErrandsType")"
-                                       href="@Url.Action("Index", "ErrandsType", new { area = "" })">
-                                        <div class="text-white text-center ms-2 d-flex align-items-center justify-content-center">
-                                            <i class="material-icons opacity-10">list_alt</i>&nbsp;
-                                        </div>
-                                        <span class="nav-link-text ms-1">@(lang == "ar" ? "المأموريات" : "ErrandsType")</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item opacity-75">
-                                    <a class="nav-link text-white  @Html.isActive("Index", "ErrandsPlace")"
-                                       href="@Url.Action("Index", "ErrandsPlace", new { area = "" })">
-                                        <div class="text-white text-center ms-2 d-flex align-items-center justify-content-center">
-                                            <i class="material-icons opacity-10">mode_of_travel</i>&nbsp;
-                                        </div>
-                                        <span class="nav-link-text ms-1">@(lang == "ar" ? "مكان المأمورية" : "ErrandsPlace")</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item opacity-75">
-                                    <a class="nav-link text-white  @Html.isActive("Index", "PermissionType")"
-                                       href="@Url.Action("Index", "PermissionType", new { area = "" })">
-                                        <div class="text-white text-center ms-2 d-flex align-items-center justify-content-center">
-                                            <i class="material-icons opacity-10">lock_person</i>&nbsp;
-                                        </div>
-                                        <span class="nav-link-text ms-1">@(lang == "ar" ? "أنواع الأذونات" : "PermissionType")</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item opacity-75">
-                                    <a class="nav-link text-white  @Html.isActive("Index", "ShiftType")"
-                                       href="@Url.Action("Index", "ShiftType", new { area = "" })">
-                                        <div class="text-white text-center ms-2 d-flex align-items-center justify-content-center">
-                                            <i class="material-icons opacity-10">receipt_long</i>&nbsp;
-                                        </div>
-                                        <span class="nav-link-text ms-1">@(lang == "ar" ? "الورديات" : "ShiftType")</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item opacity-75">
-                                    <a class="nav-link text-white  @Html.isActive("Index", "IdentityType")"
-                                       href="@Url.Action("Index", "IdentityType", new { area = "" })">
-                                        <div class="text-white text-center ms-2 d-flex align-items-center justify-content-center">
-                                            <i class="material-icons opacity-10">recent_actors</i>&nbsp;
-                                        </div>
-                                        <span class="nav-link-text ms-1">@(lang == "ar" ? "أنواع الهوية" : "IdentityType")</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item opacity-75">
-                                    <a class="nav-link text-white  @Html.isActive("Index", "FormalHoliday")"
-                                       href="@Url.Action("Index", "FormalHoliday", new { area = "" })">
-                                        <div class="text-white text-center ms-2 d-flex align-items-center justify-content-center">
-                                            <i class="material-icons opacity-10">tsunami</i>&nbsp;
-                                        </div>
-                                        <span class="nav-link-text ms-1">@(lang == "ar" ? "الاجازات الرسمية" : "FormalHoliday")</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item opacity-75">
-                                    <a class="nav-link text-white  @Html.isActive("Index", "Skill")"
-                                       href="@Url.Action("Index", "Skill", new { area = "" })">
-                                        <div class="text-white text-center ms-2 d-flex align-items-center justify-content-center">
-                                            <i class="material-icons opacity-10">tips_and_updates</i>&nbsp;
-                                        </div>
-                                        <span class="nav-link-text ms-1">@(lang == "ar" ? "المهارات" : "Skill")</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item opacity-75">
-                                    <a class="nav-link text-white  @Html.isActive("Index", "FunctionalDegree")"
-                                       href="@Url.Action("Index", "FunctionalDegree", new { area = "" })">
-                                        <div class="text-white text-center ms-2 d-flex align-items-center justify-content-center">
-                                            <i class="material-icons opacity-10">workspace_premium</i>&nbsp;
-                                        </div>
-                                        <span class="nav-link-text ms-1">@(lang == "ar" ? "الدرجات الوظيفية" : "FunctionalDegree")</span>
-                                    </a>
-                                </li>
+                             
+                              
                             </ul>
                         </div>
                     </li>
