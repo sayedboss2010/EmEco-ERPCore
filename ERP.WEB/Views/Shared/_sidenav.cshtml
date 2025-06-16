@@ -1,0 +1,409 @@
+﻿@{
+    var langCookies = Context.Request.Cookies.FirstOrDefault(c => c.Key == "Lang").Value;
+    var lang = string.IsNullOrEmpty(langCookies) ? "ar" : langCookies;
+
+    //lang = "en";
+
+    var fixedClass = lang == "ar" ? "fixed-end" : "fixed-start";
+    var iconCLass = lang == "ar" ? "start-0" : "end-0";
+    var navbar = lang == "ar" ? "px-0" : "";
+    var rotate = lang == "ar" ? "rotate-caret" : "";
+
+    //rolesid => 1=HR 2=stocks
+    var roleid = Context.Request.Cookies.FirstOrDefault(c => c.Key == "UserRule").Value;
+
+    var title = lang == "ar" ? "منظومة تخطيط الموارد" : "ERP System";
+    if (!string.IsNullOrEmpty(roleid))
+    {
+        if (roleid == "1")
+        {
+            title = lang == "ar" ? "المخازن" : "Stockes";
+        }
+        else if (roleid == "2")
+        {
+            title = lang == "ar" ? "القسم الهندسي" : "Engineer";
+        }
+        else if (roleid == "3")
+        {
+            title = lang == "ar" ? "الموارد البشرية" : "Human Resources";
+        }
+        else if (roleid == "4")
+        {
+            title = lang == "ar" ? "الحسابات" : "Accounting";
+        }
+        else if (roleid == "5")
+        {
+            title = lang == "ar" ? "الخزنة" : "Treasury";
+        }
+        else if (roleid == "7")
+        {
+            title = lang == "ar" ? "إدخال بيانات" : "DataEntry";
+        }
+        else if (roleid == "8")
+        {
+            title = lang == "ar" ? "المشروعات" : "Tender";
+        }
+        else if (roleid == "9")
+        {
+            title = lang == "ar" ? "المشتريات" : "Purchase";
+        }
+        else if (roleid == "10")
+        {
+            title = lang == "ar" ? "البوالص" : "Bills";
+        }
+    }
+}
+
+<aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0  @fixedClass @rotate bg-gradient-dark"
+       id="sidenav-main">
+    <div class="sidbar-items">
+        <div class="sidenav-header" style="height: 150px !important;">
+            <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute @iconCLass top-0 d-none d-xl-none"
+               aria-hidden="true" id="iconSidenav"></i>
+            <a class="navbar-brand m-0 text-center" href="@Url.Action("Index", "Home", new {area = ""})">
+                <img src="~/logo/LogogWhite.png" class="navbar-brand-img h-100" alt="main_logo"
+                     style="max-height: 2.5rem; margin-bottom: 10px !important;">
+                <br />
+                <span class="ms-1 font-weight-bold text-white">@title</span>
+            </a>
+        </div>
+        <hr class="horizontal light mt-0 mb-2">
+        <div class="collapse navbar-collapse " id="sidenav-collapse-main">
+            <ul class="navbar-nav">
+                <li class="nav-item mt-3">
+                    <a class="nav-link text-white @Html.isActive("Index", "Home")" href="@Url.Action("Index", "Home", new {area = ""})">
+                        <div class="text-white text-center ms-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">home</i>
+                        </div>
+                        <span class="nav-link-text ms-1">@(lang == "ar" ? "الرئيسية" : "Home")</span>
+                    </a>
+                </li>
+                @if (roleid == "6" || roleid == "7")
+                {
+                    <li class="nav-item">
+                        <a data-bs-toggle="collapse" href="#apiExamples" aria-controls="apiExamples" aria-expanded="false"
+                           class="nav-link collapsed" type="button">
+                            <div class="text-white text-center ms-2 d-flex align-items-center justify-content-center">
+                                <i class="material-icons opacity-10">settings</i>
+                            </div>
+                            <span class="nav-link-text ms-1">@(lang == "ar" ? "متغيرات النظام" : "System Lookups")</span>
+                        </a>
+                        <div id="apiExamples" class="collapse" style="">
+                            <ul class="nav">
+                                <li class="nav-item opacity-75">
+                                    <a class="nav-link text-white  @Html.isActive("Index", "Univercity")"
+                                       href="@Url.Action("Index", "Univercity", new { area = "" })">
+                                        <div class="text-white text-center ms-2 d-flex align-items-center justify-content-center">
+                                            <i class="material-icons opacity-10">apartment</i>&nbsp;
+                                        </div>
+                                        <span class="nav-link-text ms-1">@(lang == "ar" ? "الجامعات" : "Univercities")</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item opacity-75">
+                                    <a class="nav-link text-white  @Html.isActive("Index", "Faculty")"
+                                       href="@Url.Action("Index", "Faculty", new { area = "" })">
+                                        <div class="text-white text-center ms-2 d-flex align-items-center justify-content-center">
+                                            <i class="material-icons opacity-10">location_city</i>&nbsp;
+                                        </div>
+                                        <span class="nav-link-text ms-1">@(lang == "ar" ? "الكليات" : "Faculties")</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item opacity-75">
+                                    <a class="nav-link text-white  @Html.isActive("Index", "Country")"
+                                       href="@Url.Action("Index", "Country", new { area = "" })">
+                                        <div class="text-white text-center ms-2 d-flex align-items-center justify-content-center">
+                                            <i class="material-icons opacity-10">emoji_transportation</i>&nbsp;
+                                        </div>
+                                        <span class="nav-link-text ms-1">@(lang == "ar" ? "الدول" : "Country")</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item opacity-75">
+                                    <a class="nav-link text-white  @Html.isActive("Index", "LeaveType")"
+                                       href="@Url.Action("Index", "LeaveType", new { area = "" })">
+                                        <div class="text-white text-center ms-2 d-flex align-items-center justify-content-center">
+                                            <i class="material-icons opacity-10">beach_access</i>&nbsp;
+                                        </div>
+                                        <span class="nav-link-text ms-1">@(lang == "ar" ? "الاجازات" : "LeaveType")</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item opacity-75">
+                                    <a class="nav-link text-white  @Html.isActive("Index", "ErrandsType")"
+                                       href="@Url.Action("Index", "ErrandsType", new { area = "" })">
+                                        <div class="text-white text-center ms-2 d-flex align-items-center justify-content-center">
+                                            <i class="material-icons opacity-10">list_alt</i>&nbsp;
+                                        </div>
+                                        <span class="nav-link-text ms-1">@(lang == "ar" ? "المأموريات" : "ErrandsType")</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item opacity-75">
+                                    <a class="nav-link text-white  @Html.isActive("Index", "ErrandsPlace")"
+                                       href="@Url.Action("Index", "ErrandsPlace", new { area = "" })">
+                                        <div class="text-white text-center ms-2 d-flex align-items-center justify-content-center">
+                                            <i class="material-icons opacity-10">mode_of_travel</i>&nbsp;
+                                        </div>
+                                        <span class="nav-link-text ms-1">@(lang == "ar" ? "مكان المأمورية" : "ErrandsPlace")</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item opacity-75">
+                                    <a class="nav-link text-white  @Html.isActive("Index", "PermissionType")"
+                                       href="@Url.Action("Index", "PermissionType", new { area = "" })">
+                                        <div class="text-white text-center ms-2 d-flex align-items-center justify-content-center">
+                                            <i class="material-icons opacity-10">lock_person</i>&nbsp;
+                                        </div>
+                                        <span class="nav-link-text ms-1">@(lang == "ar" ? "أنواع الأذونات" : "PermissionType")</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item opacity-75">
+                                    <a class="nav-link text-white  @Html.isActive("Index", "ShiftType")"
+                                       href="@Url.Action("Index", "ShiftType", new { area = "" })">
+                                        <div class="text-white text-center ms-2 d-flex align-items-center justify-content-center">
+                                            <i class="material-icons opacity-10">receipt_long</i>&nbsp;
+                                        </div>
+                                        <span class="nav-link-text ms-1">@(lang == "ar" ? "الورديات" : "ShiftType")</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item opacity-75">
+                                    <a class="nav-link text-white  @Html.isActive("Index", "IdentityType")"
+                                       href="@Url.Action("Index", "IdentityType", new { area = "" })">
+                                        <div class="text-white text-center ms-2 d-flex align-items-center justify-content-center">
+                                            <i class="material-icons opacity-10">recent_actors</i>&nbsp;
+                                        </div>
+                                        <span class="nav-link-text ms-1">@(lang == "ar" ? "أنواع الهوية" : "IdentityType")</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item opacity-75">
+                                    <a class="nav-link text-white  @Html.isActive("Index", "FormalHoliday")"
+                                       href="@Url.Action("Index", "FormalHoliday", new { area = "" })">
+                                        <div class="text-white text-center ms-2 d-flex align-items-center justify-content-center">
+                                            <i class="material-icons opacity-10">tsunami</i>&nbsp;
+                                        </div>
+                                        <span class="nav-link-text ms-1">@(lang == "ar" ? "الاجازات الرسمية" : "FormalHoliday")</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item opacity-75">
+                                    <a class="nav-link text-white  @Html.isActive("Index", "Skill")"
+                                       href="@Url.Action("Index", "Skill", new { area = "" })">
+                                        <div class="text-white text-center ms-2 d-flex align-items-center justify-content-center">
+                                            <i class="material-icons opacity-10">tips_and_updates</i>&nbsp;
+                                        </div>
+                                        <span class="nav-link-text ms-1">@(lang == "ar" ? "المهارات" : "Skill")</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item opacity-75">
+                                    <a class="nav-link text-white  @Html.isActive("Index", "FunctionalDegree")"
+                                       href="@Url.Action("Index", "FunctionalDegree", new { area = "" })">
+                                        <div class="text-white text-center ms-2 d-flex align-items-center justify-content-center">
+                                            <i class="material-icons opacity-10">workspace_premium</i>&nbsp;
+                                        </div>
+                                        <span class="nav-link-text ms-1">@(lang == "ar" ? "الدرجات الوظيفية" : "FunctionalDegree")</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                }
+               @*  @if (roleid == "6" || roleid == "3")
+                {
+                    <li class="nav-item">
+                        <a data-bs-toggle="collapse" href="#apiExamples1" aria-controls="apiExamples1" aria-expanded="false" class="nav-link collapsed" type="button">
+                            <div class="text-white text-center ms-2 d-flex align-items-center justify-content-center">
+                                <i class="material-icons opacity-10">groups</i>
+                            </div>
+                            <span class="nav-link-text ms-1">@(lang == "ar" ? "الموارد البشرية" : "Human Resources")</span>
+                        </a>
+                        <div id="apiExamples1" class="collapse" style="">
+                            <ul class="nav">
+                                <li class="nav-item opacity-75">
+                                    <a class="nav-link text-white @Html.isActive("Index", "Employees")"
+                                       href="@Url.Action("Index", "Employees", new { area = "HR" })">
+                                        <div class="text-white text-center ms-2 d-flex align-items-center justify-content-center">
+                                            <i class="material-icons opacity-10">group</i>&nbsp;
+                                        </div>
+                                        <span class="nav-link-text ms-1">@(lang == "ar" ? "الموظفين" : "Employees")</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                }
+                @if (roleid == "6" || roleid == "1")
+                {
+                    <li class="nav-item">
+                        <a data-bs-toggle="collapse" href="#apiExamples2" aria-controls="apiExamples2" aria-expanded="false" class="nav-link collapsed" type="button">
+                            <div class="text-white text-center ms-2 d-flex align-items-center justify-content-center">
+                                <i class="material-icons opacity-10">inventory_2</i>
+                            </div>
+                            <span class="nav-link-text ms-1">@(lang == "ar" ? "المخازن" : "Stocks")</span>
+                        </a>
+                        <div id="apiExamples2" class="collapse" style="">
+                            <ul class="nav">
+                                <li class="nav-item opacity-75">
+                                    <a class="nav-link text-white  @Html.isActive("Index", "Stocks")"
+                                       href="@Url.Action("Index", "Stocks", new { area = "" })">
+                                        <div class="text-white text-center ms-2 d-flex align-items-center justify-content-center">
+                                            <i class="material-icons opacity-10">inventory</i>&nbsp;
+                                        </div>
+                                        <span class="nav-link-text ms-1">@(lang == "ar" ? "المخازن" : "Stocks")</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item opacity-75">
+                                    <a class="nav-link text-white  @Html.isActive("Index", "ItemCategory")"
+                                       href="@Url.Action("Index", "ItemCategory", new { area = "" })">
+                                        <div class="text-white text-center ms-2 d-flex align-items-center justify-content-center">
+                                            <i class="material-icons opacity-10">group_work</i>&nbsp;
+                                        </div>
+                                        <span class="nav-link-text ms-1">@(lang == "ar" ? "المجموعات" : "Categories")</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                }
+                @if (roleid == "6" || roleid == "8")
+                {
+                    <li class="nav-item">
+                        <a data-bs-toggle="collapse" href="#apiExamples3" aria-controls="apiExamples3" aria-expanded="false" class="nav-link collapsed" type="button">
+                            <div class="text-white text-center ms-2 d-flex align-items-center justify-content-center">
+                                <i class="material-icons opacity-10">table_view</i>
+                            </div>
+                            <span class="nav-link-text ms-1">@(lang == "ar" ? "المشاريع" : "Projects")</span>
+                        </a>
+                        <div id="apiExamples3" class="collapse" style="">
+                            <ul class="nav">
+                                <li class="nav-item opacity-75">
+                                    <a class="nav-link text-white  @Html.isActive("Index", "Tender")"
+                                       href="@Url.Action("Index", "Tender", new { area = "" })">
+                                        <div class="text-white text-center ms-2 d-flex align-items-center justify-content-center">
+                                            <i class="material-icons opacity-10">manage_accounts</i>&nbsp;
+                                        </div>
+                                        <span class="nav-link-text ms-1">@(lang == "ar" ? "المناقصات" : "Tenders")</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                }
+                @if (roleid == "6" || roleid == "5")
+                {
+                    <li class="nav-item">
+                        <a data-bs-toggle="collapse" href="#apiExamples4" aria-controls="apiExamples4" aria-expanded="false" class="nav-link collapsed" type="button">
+                            <div class="text-white text-center ms-2 d-flex align-items-center justify-content-center">
+                                <i class="material-icons opacity-10">account_balance</i>
+                            </div>
+                            <span class="nav-link-text ms-1">@(lang == "ar" ? "الخزينة" : "Treasury")</span>
+                        </a>
+                        <div id="apiExamples4" class="collapse" style="">
+                            <ul class="nav">
+                                <li class="nav-item opacity-75">
+                                    <a class="nav-link text-white  @Html.isActive("Index", "Currency")"
+                                       href="@Url.Action("Index", "Currency", new { area = "Treasury" })">
+                                        <div class="text-white text-center ms-2 d-flex align-items-center justify-content-center">
+                                            <i class="material-icons opacity-10">monetization_on</i>&nbsp;
+                                        </div>
+                                        <span class="nav-link-text ms-1">@(lang == "ar" ? "العملات" : "Currencies")</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item opacity-75">
+                                    <a class="nav-link text-white @Html.isActive("Index", "TreasuryMoveOutType")"
+                                       href="@Url.Action("Index", "TreasuryMoveOutType", new { area = "Treasury" })">
+                                        <div class="text-white text-center ms-2 d-flex align-items-center justify-content-center">
+                                            <i class="material-icons opacity-10">list</i>&nbsp;
+                                        </div>
+                                        <span class="nav-link-text ms-1">@(lang == "ar" ? "أنواع الصرف" : "Withdraw Types")</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item opacity-75">
+                                    <a class="nav-link text-white @Html.isActive("MoveIn", "Treasury")"
+                                       href="@Url.Action("MoveIn", "Treasury", new { area = "Treasury" })">
+                                        <div class="text-white text-center ms-2 d-flex align-items-center justify-content-center">
+                                            <i class="material-icons opacity-10">login</i>&nbsp;
+                                        </div>
+                                        <span class="nav-link-text ms-1">@(lang == "ar" ? "إيداع" : "Deposit")</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item opacity-75">
+                                    <a class="nav-link text-white @Html.isActive("MoveOut", "Treasury")"
+                                       href="@Url.Action("MoveOut", "Treasury", new { area = "Treasury" })">
+                                        <div class="text-white text-center ms-2 d-flex align-items-center justify-content-center">
+                                            <i class="material-icons opacity-10">logout</i>&nbsp;
+                                        </div>
+                                        <span class="nav-link-text ms-1">@(lang == "ar" ? "صرف" : "Withdraw")</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item opacity-75">
+                                    <a class="nav-link text-white @Html.isActive("Index", "CustodySettlement")"
+                                       href="@Url.Action("Index", "CustodySettlement", new { area = "Treasury" })">
+                                        <div class="text-white text-center ms-2 d-flex align-items-center justify-content-center">
+                                            <i class="material-icons opacity-10">paid</i>&nbsp;
+                                        </div>
+                                        <span class="nav-link-text ms-1">@(lang == "ar" ? "تسوية عهد" : "Custody settlement")</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item opacity-75">
+                                    <a class="nav-link text-white @Html.isActive("AllTreasuryMovement", "Treasury")"
+                                       href="@Url.Action("AllTreasuryMovement", "Treasury", new { area = "Treasury" })">
+                                        <div class="text-white text-center ms-2 d-flex align-items-center justify-content-center">
+                                            <i class="material-icons opacity-10">sync_alt</i>&nbsp;
+                                        </div>
+                                        <span class="nav-link-text ms-1">@(lang == "ar" ? "تقرير الخزينة" : "Treasury Report")</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item opacity-75">
+                                    <a class="nav-link text-white @Html.isActive("AllTreasuryDuration", "Treasury")"
+                                       href="@Url.Action("AllTreasuryDuration", "Treasury", new { area = "Treasury" })">
+                                        <div class="text-white text-center ms-2 d-flex align-items-center justify-content-center">
+                                            <i class="material-icons opacity-10">sync_alt</i>&nbsp;
+                                        </div>
+                                        <span class="nav-link-text ms-1">@(lang == "ar" ? "تقرير الخزينة لفترة" : "Treasury Report")</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                }
+                @if (roleid == "6" || roleid == "10")
+                {
+                    <li class="nav-item">
+                        <a data-bs-toggle="collapse" href="#apiExamples5" aria-controls="apiExamples5" aria-expanded="false" class="nav-link collapsed" type="button">
+                            <div class="text-white text-center ms-2 d-flex align-items-center justify-content-center">
+                                <i class="material-icons opacity-10">local_shipping</i>
+                            </div>
+                            <span class="nav-link-text ms-1">@(lang == "ar" ? "البوالص" : "Bills")</span>
+                        </a>
+                        <div id="apiExamples5" class="collapse" style="">
+                            <ul class="nav">
+                                <li class="nav-item opacity-75">
+                                    <a class="nav-link text-white  @Html.isActive("Index", "Bills")"
+                                       href="@Url.Action("Index", "Bills", new { area = "ShipmentBills" })">
+                                        <div class="text-white text-center ms-2 d-flex align-items-center justify-content-center">
+                                            <i class="material-icons opacity-10">list</i>&nbsp;
+                                        </div>
+                                        <span class="nav-link-text ms-1">@(lang == "ar" ? "بوالص الشحن" : "Bills")</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item opacity-75">
+                                    <a class="nav-link text-white  @Html.isActive("AddEditBill", "Bills")"
+                                       href="@Url.Action("AddEditBill", "Bills", new { area = "ShipmentBills" })">
+                                        <div class="text-white text-center ms-2 d-flex align-items-center justify-content-center">
+                                            <i class="material-icons opacity-10">add_business</i>&nbsp;
+                                        </div>
+                                        <span class="nav-link-text ms-1">@(lang == "ar" ? "بوليصة جديدة" : "Bills")</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item opacity-75">
+                                    <a class="nav-link text-white  @Html.isActive("AllCostsReport", "Bills")"
+                                       href="@Url.Action("AllCostsReport", "Bills", new { area = "ShipmentBills" })">
+                                        <div class="text-white text-center ms-2 d-flex align-items-center justify-content-center">
+                                            <i class="material-icons opacity-10">add_business</i>&nbsp;
+                                        </div>
+                                        <span class="nav-link-text ms-1">@(lang == "ar" ? "تقرير التكاليف" : "Costs Report")</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                } *@
+            </ul>
+        </div>
+    </div>
+</aside>

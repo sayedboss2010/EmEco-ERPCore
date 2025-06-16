@@ -1,0 +1,59 @@
+﻿@* @model List<ERP.VM.HrShiftTypeVm>
+
+    @{
+        var langCookies = Context.Request.Cookies.FirstOrDefault(c => c.Key == "Lang").Value;
+        var lang = string.IsNullOrEmpty(langCookies) ? "ar" : langCookies;
+    }
+
+    @{
+        if (Model != null && Model.Count > 0)
+        {
+            <div class="row">
+                <div class="table-responsive p-0" id="printDiv">
+                    <table class="table align-items-center mb-0">
+                        <thead>
+                            <tr>
+                                <th style="text-align:center">@(lang == "ar" ? "الاسم بالعربية" : "Arabic Name")</th>
+                                <th style="text-align:center">@(lang == "ar" ? "الاسم بالإنجليزية" : "English Name")</th>
+                                <th style="text-align:center">@(lang == "ar" ? "بداية الوقت" : "Start Time")</th>
+                                <th style="text-align:center">@(lang == "ar" ? "نهاية الوقت" : "End Time")</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td style="text-align:center">@item.NameAr</td>
+                                        <td style="text-align:center">@item.NameEn</td>
+                                        <td style="text-align:center">@item.StartTime</td>
+                                        <td style="text-align:center">@item.EndTime</td>
+                                        <td>
+                                            <a href="javascipt:;" data-id="@item.Id" data-lang="@lang" class="btn edit-btn">
+                                                <i class="fa fa-edit"></i>&nbsp;&nbsp;@(lang=="ar"?"تعديل":"Edit")
+                                            </a>
+                                            &nbsp;&nbsp;
+                                            <a href="javascipt:;" data-id="@item.Id" class="btn delet-btn btnDelete">
+                                                <i class="fa fa-trash"></i>&nbsp;&nbsp;@(lang=="ar"?"حذف":"Delete")
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <img src="~/img/emptyData.jpg" />
+                    <p class="text-bold">@(lang == "ar" ? "لا يوجد بيانات" : "No Data Found")</p>
+                </div>
+            </div>
+        }
+    }
+ *@

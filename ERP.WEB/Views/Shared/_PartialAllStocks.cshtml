@@ -1,0 +1,98 @@
+﻿@* @model List<ERP.VM.StStockVm>
+
+@{
+    var langCookies = Context.Request.Cookies.FirstOrDefault(c => c.Key == "Lang").Value;
+    var lang = string.IsNullOrEmpty(langCookies) ? "ar" : langCookies;
+}
+
+@{
+    if (Model != null && Model.Count > 0)
+    {
+        <div class="row">
+            <div class="table-responsive p-0" id="printDiv">
+                <table class="table align-items-center mb-0">
+                    <thead>
+                        <tr>
+                            <th style="text-align:center">@(lang == "ar" ? "الاسم " : "Arabic")</th>
+                            <th style="text-align:center">@(lang == "ar" ? "العنوان" : "Address")</th>
+                            <th style="text-align:center">@(lang == "ar" ? "وسائل الإتصال" : "Contact Data")</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            foreach (var item in Model)
+                            {
+                                <tr>
+                                                            <td style="text-align:center">
+                                                                <span>@item.Name</span>
+                                                                @{
+                                                                    if (item.MainStockId != null)
+                                                                    {
+                                                                        <br />
+                                                                        if (item.MainStockId == item.Id)
+                                                                        {
+                                                                            <span class="mainstock">
+                                                                                @(lang == "ar" ? "مخزن رئيسي" : "Main Stock")
+                                                                            </span>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <span class="branchstock">
+                                                                                @(lang == "ar" ? "مخزن فرعي" : "Branch Stock")
+                                                                            </span>
+                                                                        }
+                                                                    }
+                                                                }
+                                                            </td>
+                                    <td style="text-align:center">@item.Address</td>
+                                    <td style="text-align:center">
+                                        @if (!string.IsNullOrEmpty(item.Email))
+                                        {
+                                            <span><i class="fa fa-envelope" style="color:#3aaf85"></i>&nbsp;&nbsp;@item.Email</span><br />
+                                        }
+                                        @if (!string.IsNullOrEmpty(item.Phone))
+                                        {
+                                            <span><i class="fa fa-phone" style="color: #55acee;"></i>&nbsp;&nbsp;@item.Phone</span>
+                                        }                                       
+                                    </td>
+                                    <td>
+                                        <a href="javascipt:;" data-id="@item.Id" data-lang="@lang" class="btn edit-btn">
+                                            <i class="fa fa-edit"></i>&nbsp;&nbsp;@(lang=="ar"?"تعديل":"Edit")
+                                        </a>
+                                        &nbsp;&nbsp;
+                                        <a href="javascipt:;" data-id="@item.Id" class="btn delet-btn btnDelete">
+                                            <i class="fa fa-trash"></i>&nbsp;&nbsp;حذف
+                                        </a>
+                                        &nbsp;&nbsp;
+                                        @if (item.IsActive == true)
+                                        {
+                                            <a href="javascipt:;" data-id="@item.Id" data-active="0" class="btn stop-btn btnActive">
+                                                <i class="fa fa-stop"></i>&nbsp;&nbsp;@(lang=="ar"?"إيقاف":"Stop")
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a href="javascipt:;" data-id="@item.Id" data-active="1" class="btn active-btn btnActive">
+                                                <i class="fa fa-play"></i>&nbsp;&nbsp;@(lang=="ar"?"تفعيل":"Active")
+                                            </a>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <img src="~/img/emptyData.jpg" />
+                <p class="text-bold">@(lang == "ar" ? "لا يوجد بيانات" : "No Data Found")</p>
+            </div>
+        </div>
+    }
+} *@
