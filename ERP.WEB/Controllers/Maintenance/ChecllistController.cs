@@ -54,7 +54,7 @@ namespace ERP.WEB.Controllers.Maintenance
        }
 
         [HttpPost]
-        public IActionResult savadata(int checklistid, int LocationID, int EquipmentID, int PlanID)
+        public IActionResult savadata(int checklistid, int LocationID, int EquipmentID, int PlanID,int EquipmentLocationID)
         {
 
 
@@ -74,7 +74,7 @@ namespace ERP.WEB.Controllers.Maintenance
             checkListMasterdata.LocationID = LocationID;
             checkListMasterdata.EquipmentID = EquipmentID;
             checkListMasterdata.CreatedBy = userId;
-
+            checkListMasterdata.EquipmentLocationID = EquipmentLocationID;
 
             var lstEquipment = _Check.Add(checkListMasterdata);
 
@@ -90,7 +90,7 @@ namespace ERP.WEB.Controllers.Maintenance
         }
 
         [HttpPost]
-        public IActionResult savadataDetails(int checklistid, int LocationID, int EquipmentID, int PlanID,  List<CheckListMasterDetailVm> products)
+        public IActionResult savadataDetails(int checklistid, int LocationID, int EquipmentID, int PlanID,  List<CheckListMasterDetailVm> products,int EquipmentLocationID)
         {
 
 
@@ -110,6 +110,7 @@ namespace ERP.WEB.Controllers.Maintenance
             checkListMasterdata.LocationID = LocationID;
             checkListMasterdata.EquipmentID = EquipmentID;
             checkListMasterdata.CreatedBy = userId;
+            checkListMasterdata.EquipmentLocationID = EquipmentLocationID;
 
 
             var lstEquipment = _Check.Add(checkListMasterdata);

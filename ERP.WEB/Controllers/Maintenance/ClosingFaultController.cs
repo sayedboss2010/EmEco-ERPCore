@@ -2,6 +2,7 @@
 using ERP.Services.Maintenance;
 using ERP.VM.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ERP.WEB.Controllers.Maintenance
 {
@@ -23,11 +24,14 @@ namespace ERP.WEB.Controllers.Maintenance
 
         public IActionResult Edit(int id)
         {
+            //var lstListDropstore = _Check.GetListDrop();
+            //ViewBag.ListDropstore = new SelectList(lstListDropstore, "Id", "NameAr");
+
             var data = _Check.Find(id);
             return View(data);
         }
         [HttpPost]
-        public IActionResult Edit(int CheckListMasterDetailID,IFormFile before, IFormFile After)
+        public IActionResult Edit(int CheckListMasterDetailID, IFormFile before, IFormFile After)
         {
 
             string id = Request.Cookies.FirstOrDefault(c => c.Key == "UserId").Value;
@@ -42,10 +46,19 @@ namespace ERP.WEB.Controllers.Maintenance
             data.oldImage = before;
             data.newImage = After;
             data.CreatedByuser = userId;
+            //data.StoreID = StoreID;
 
-            _Check.Update(data);
-            
-            return RedirectToAction("Index");
+           var dataresult= _Check.Update(data);
+            if (dataresult == true)
+            {
+                return RedirectToAction("Index");
+            }
+            else {
+
+                TempData["NoQuantityavaiable"] = 1;
+            return RedirectToAction("Edit", new { id= CheckListMasterDetailID });
+            }
+                
         }
     }
 }

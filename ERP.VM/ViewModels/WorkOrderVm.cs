@@ -8,6 +8,7 @@ namespace ERP.VM.ViewModels
 {
     public class WorkOrderVm
     {
+
         public int WorkOrderID { get; set; }
 
         public int? CheckListMasterDetailID { get; set; }
@@ -41,5 +42,24 @@ namespace ERP.VM.ViewModels
         public virtual CheckListMasterDetailVm CheckListMasterDetail { get; set; }
 
         public virtual SparePartVm SparePart { get; set; }
+
+
+        public string CreatedByUser { get; set; }
+        public string Createddate { get; set; }
+
+        public string CheckItem { get; set; }
+        public int? EquipmentTypeID { get; set; }
+        public string TypeName { get; set; }
+        public string EquipmentName { get; set; }
+        public string LocationName { get; set; }
+        public string planName { get; set; }
+        public string? SparePartName { get; set; }
+
+        public string? SparePartTypeName { get; set; }
+        public string? EquipmentLocationsName { get; set; }
+
+        public virtual List<int> Ids { get; set; } = new List<int>();
+
+
     }
 }

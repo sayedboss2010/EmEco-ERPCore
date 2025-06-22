@@ -32,6 +32,8 @@ public static class DependencyInjection
         services.AddScoped<IGenericRepo<ClosingFaultVm>, ClosingFaultRepo>();
         services.AddScoped<IGenericService<ClosingFaultVm>, ClosingFaultService>();
 
+        services.AddScoped<IGenericRepo<WorkOrderVm>, WorkOrderRepo>();
+        services.AddScoped<IGenericService<WorkOrderVm>, WorkOrderService>();
         //Auto Mapper Configurations
         var mapperConfig = new MapperConfiguration(mc =>
         {

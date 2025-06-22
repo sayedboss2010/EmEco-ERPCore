@@ -34,14 +34,13 @@ namespace ERP.Repository.Repositories.Maintenance
             {
                 dbContext.Database.UseTransaction(transaction.GetDbTransaction());
 
-                var EquipmentLocationID= dbContext.EquipmentLocations.Where(a=>a.IsActive==true && a.IsDeleted==false && a.LocationID==entity.LocationID && a.EquipmentID==entity.EquipmentID).Select(a=>a.EquipmentLocationID).FirstOrDefault();
 
                 if (entity.CheckListMasterDetails.Count()==0)
                 {
                     var CheckListMasterdata = new CheckListMaster
                     {
                         CheckListID = entity.CheckListID,
-                        EquipmentLocationID = EquipmentLocationID,
+                        EquipmentLocationID = entity.EquipmentLocationID,
                         ProcessDate = DateTime.Now,
                         CreatedBy = entity.CreatedBy,
                         CreatedAt = DateTime.Now,
@@ -62,7 +61,7 @@ namespace ERP.Repository.Repositories.Maintenance
                     var CheckListMasterdata = new CheckListMaster
                     {
                         CheckListID = entity.CheckListID,
-                        EquipmentLocationID = EquipmentLocationID,
+                        EquipmentLocationID = entity.EquipmentLocationID,
                         ProcessDate = DateTime.Now,
                         CreatedBy = entity.CreatedBy,
                         CreatedAt = DateTime.Now,
@@ -80,6 +79,7 @@ namespace ERP.Repository.Repositories.Maintenance
 
                     foreach (var item in entity.CheckListMasterDetails)
                     {
+                        //var QuantityStoreInventorytotal = dbContext.StoreInventories.Where(a => a.SparePartID == item.SparePartID).Select(a => a.Quantity).Sum();
                         var CheckListMasterDetailsdata = new CheckListMasterDetail
                         {
                             CheckListMasterID = CheckListMasterdata.CheckListMasterID,
@@ -92,9 +92,25 @@ namespace ERP.Repository.Repositories.Maintenance
                             ReviewedAt = DateTime.Now,
                             IsDeleted = false,
                             IsActive = true,
+                            //QuantityStoreInventory = QuantityStoreInventorytotal,
                         };
                         dbContext.CheckListMasterDetails.Add(CheckListMasterDetailsdata);
                         dbContext.SaveChanges();
+
+                        var WorkOrderdata = new WorkOrder
+                        {
+                            CheckListMasterDetailID = CheckListMasterDetailsdata.CheckListMasterDetailID,
+                            SparePartID = item.SparePartID,
+                            Quantity = item.Quantity,
+                            CreatedBy = entity.CreatedBy,
+                            CreatedAt = DateTime.Now,
+                            IsDeleted = false,
+                            IsActive = true,
+                        };
+                        dbContext.WorkOrders.Add(WorkOrderdata);
+                        dbContext.SaveChanges();
+
+
                     }
                 }
 
