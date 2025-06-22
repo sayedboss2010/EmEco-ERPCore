@@ -11,7 +11,7 @@
 //});
 $('#Editt_form').submit(function (e) {
 
-    debugger
+    
     var check = 1;
 
     //var StoreID = $('#StoreID').val();
