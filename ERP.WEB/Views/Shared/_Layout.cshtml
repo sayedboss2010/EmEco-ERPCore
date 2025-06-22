@@ -33,7 +33,7 @@
     <!-- CSS Files -->
     <link id="pagestyle" href="~/assets/css/material-dashboard.css?v=3.0.0" rel="stylesheet" />
     <link href="~/css/site.css" rel="stylesheet" />
-    <link href="~/lib/ajax/jquery.gritter.css" rel="stylesheet" />    
+    <link href="~/lib/ajax/jquery.gritter.css" rel="stylesheet" />
 </head>
 <body class="g-sidenav-show @bodyClass bg-gray-200">
     <partial name="_sidenav" />
@@ -45,19 +45,19 @@
         <partial name="_footer" />
     </main>
     <partial name="_theme" />
-    
+
     <script src="~/modules/global.js"></script>
 
     <script src="~/assets/js/core/popper.min.js"></script>
     <script src="~/assets/js/core/bootstrap.min.js"></script>
-  
+
     <!-- Github buttons -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
     <script src="~/assets/js/material-dashboard.min.js?v=3.0.0"></script>
     <script src="~/jquery/3.7.0/Content/Scripts/jquery-3.7.0.min.js"></script>
     <script src="~/assets/js/plugins/bootbox.min.js"></script>
-    <script src="~/lib/ajax/jquery.gritter.min.js"></script>    
+    <script src="~/lib/ajax/jquery.gritter.min.js"></script>
     <script>
         window.addEventListener("load", function () {
 
@@ -72,7 +72,7 @@
 
             let number = $(this).val();
             $(this).val(moneyDigits(number));
-        });  
+        });
     </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

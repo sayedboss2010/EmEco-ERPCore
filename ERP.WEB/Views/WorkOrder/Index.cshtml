@@ -1,0 +1,163 @@
+﻿@{
+    @model List<ERP.VM.ViewModels.WorkOrderVm>
+
+    var langCookies = Context.Request.Cookies.FirstOrDefault(c => c.Key == "Lang").Value;
+    var lang = string.IsNullOrEmpty(langCookies) ? "ar" : langCookies;
+
+    ViewData["Title"] = lang == "ar" ? " القائمة " : " check list";
+}
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f5f5;
+        margin: 20px;
+    }
+
+    h2 {
+        text-align: center;
+        color: #333;
+    }
+
+    table {
+        border-collapse: separate;
+        border-spacing: 0;
+        width: 100%;
+        direction: rtl;
+        background-color: #fff;
+        border: 2px solid #444;
+    }
+
+    th, td {
+        border-left: 1px solid #ccc;
+        border-bottom: 1px solid #ccc;
+        padding: 10px;
+        text-align: center;
+    }
+
+        th:first-child, td:first-child {
+            border-right: 1px solid #ccc;
+        }
+
+    tr:last-child td {
+        border-bottom: none;
+    }
+
+    th {
+        background-color: #004d7a;
+        color: white;
+        font-weight: bold;
+    }
+
+    .ok {
+        color: #0fc515;
+    }
+
+    .fault {
+        color: #e31025;
+    }
+</style>
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 my-2 pt-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10" style="text-align:center">
+                        @if (ViewBag.Error != null && ViewBag.Error != "")
+                        {
+                            <div class="alert alert-danger alert-dismissible fade show">
+                                <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <b class="alert-link"> @ViewBag.Error </b>
+                            </div>
+                        }
+                        @if (ViewBag.Success != null && ViewBag.Success != "")
+                        {
+                            <div class="alert alert-success alert-dismissible fade show">
+                                <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <b class="alert-link"> @ViewBag.Success </b>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <form class="text-start" asp-action="SaveMoveOut" method="post" enctype="multipart/form-data">
+                    <input hidden />
+                    <div class="shadow-blur">
+                        <div class="card-header1">
+                            <center>
+                                <h5> امر الشغل </h5>
+                            </center>
+                        </div>
+
+                    </div>
+
+                    <br />
+                    <center>
+
+                    <button type="button" id="btnSearch" class="btn  edit-btn">بحث</button>
+                    </center>
+
+                    <div id="resultDiv">
+
+                        <table id="tbl" style="width: 102%;padding: -14px;margin: 4px; " border="1">
+                            <thead>
+                                <tr>
+                                    <th>القائمة</th>
+                                    <th>المعدة</th>
+                                    <th>الموقع</th>
+                                    <th>نوع المعدة</th>
+                                    <th>الخطة</th>
+                                    <th>المسئول عن العطل</th>
+                                    <th>تاريخ العطل</th>
+                                    <th>نوع قطع الغيار</th>
+                                    <th>قطع الغيار</th>
+                                    <th>كمية قطع الغيار</th>
+                                    <th>امر الشغل</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <!-- السطر الأساسي -->
+                                    <tr class="table-primary" style="background-color:#b7b1c7">
+                                        <td>@item.CheckItem</td>
+                                        @* <td>@item.TypeName</td> *@
+                                        <td>@item.EquipmentName</td>
+                                        <td>@item.LocationName</td>
+                                        <td>@item.EquipmentLocationsName</td>
+                                        <td>@item.planName</td>
+                                        <td>@item.CreatedByUser</td>
+                                        <td>@item.Createddate</td>
+                                        <td>@item.SparePartTypeName</td>
+                                        <td>@item.SparePartName</td>
+                                        <td>@item.Quantity</td>
+                                        <td>  <input type="checkbox" class="my-check" value="@item.WorkOrderID"></td>
+
+                                    </tr>
+
+                                    <!-- سطر التفاصيل -->
+                                }
+                            </tbody>
+                        </table>
+
+
+                    </div>
+
+                </form>
+
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="~/jquery/3.7.0/Content/Scripts/jquery-3.7.0.min.js"></script>
+<script src="~/modules/workorder-module.js"></script>

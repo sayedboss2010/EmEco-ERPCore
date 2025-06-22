@@ -69,7 +69,15 @@ namespace ERP.Repository.Repositories.Maintenance
 
         public IList<CustomOption> GetListDrop()
         {
-            throw new NotImplementedException();
+            using var dbContext = new ErpDbContext();
+            var lst = dbContext.Stores.Where(f => f.IsDeleted == false && f.IsActive == true)
+                .Select(f => new CustomOption
+                {
+                    Id = f.StoreID,
+                    NameAr = f.StoreName,
+                }).ToList();
+
+            return lst;
         }
 
         public IList<ClosingFaultVm> List()
@@ -128,88 +136,106 @@ namespace ERP.Repository.Repositories.Maintenance
             {
                 dbContext.Database.UseTransaction(transaction.GetDbTransaction());
 
-                var oldimage= "";
-                var Newimage = "";
-                if (entity.oldImage!=null)
-                {
-
-                    string path = Directory.GetCurrentDirectory().Replace("\\", "/") + "/wwwroot/Files/Before/" + DateTime.Now.Year + "/" + DateTime.Now.Month;
-                    if (!Directory.Exists(path))
-                        Directory.CreateDirectory(path);
-
-                    string fileName = Guid.NewGuid() + Path.GetFileName(entity.oldImage.FileName);
-                    string finalpath = Path.Combine(path, fileName);
-
-                    using (var stream = new FileStream(
-
-                        finalpath, FileMode.Create
-
-                        ))
-                    {
-                        entity.oldImage.CopyTo(stream);
-                    }
-                    string pathDB = "Before/" + DateTime.Now.Year + "/" + DateTime.Now.Month;
-                    oldimage=pathDB + "/" + fileName;
-                }
-
-                if (entity.newImage != null)
-                {
-
-                    string path = Directory.GetCurrentDirectory().Replace("\\", "/") + "/wwwroot/Files/After/" + DateTime.Now.Year + "/" + DateTime.Now.Month;
-                    if (!Directory.Exists(path))
-                        Directory.CreateDirectory(path);
-
-                    string fileName = Guid.NewGuid() + Path.GetFileName(entity.oldImage.FileName);
-                    string finalpath = Path.Combine(path, fileName);
-
-                    using (var stream = new FileStream(
-
-                        finalpath, FileMode.Create
-
-                        ))
-                    {
-                        entity.oldImage.CopyTo(stream);
-                    }
-                    string pathDB = "After/" + DateTime.Now.Year + "/" + DateTime.Now.Month;
-                    Newimage = pathDB + "/" + fileName;
-                }
+              
 
                 var data = dbContext.CheckListMasterDetails.Find(entity.CheckListMasterDetailID);
-                
-                if (data!=null)
-                {
-                    data.isClosed = true;
-                    data.isClosedDate = DateTime.Now;
-                    data.ExecutedBy = entity.CreatedByuser;
-                    data.ExecutedAt = DateTime.Now;
-                    data.UpdatedAt = DateTime.Now;
-                    data.UpdatedBy = entity.CreatedByuser;
-                    data.ImgeOld = oldimage;
-                    data.ImgeNew = Newimage;
-                }
-                dbContext.SaveChanges();
 
-                var datamastercount = dbContext.CheckListMasterDetails.Where(a => a.CheckListMasterID == data.CheckListMasterID && a.isClosed == null).Count();
-               
-                if (datamastercount == 0) {
+                //var QuantityStoreInventorytotal = dbContext.StoreInventories.Where(a => a.SparePartID == data.SparePartID &&a.StoreID== entity.StoreID).Select(a => a.Quantity).Sum();
 
-                    var datamaster = dbContext.CheckListMasters.Where(a => a.CheckListMasterID == data.CheckListMasterID).FirstOrDefault();
-                    if (datamaster!=null)
+                //if (QuantityStoreInventorytotal>=data.Quantity)
+                //{
+                    var oldimage = "";
+                    var Newimage = "";
+                    if (entity.oldImage != null)
                     {
-                        datamaster.isClosed=true;
-                        datamaster.isClosedDate = DateTime.Now;
-                        datamaster.UpdatedBy = entity.CreatedByuser; ;
-                        datamaster.UpdatedAt = DateTime.Now;
+
+                        string path = Directory.GetCurrentDirectory().Replace("\\", "/") + "/wwwroot/Files/Before/" + DateTime.Now.Year + "/" + DateTime.Now.Month;
+                        if (!Directory.Exists(path))
+                            Directory.CreateDirectory(path);
+
+                        string fileName = Guid.NewGuid() + Path.GetFileName(entity.oldImage.FileName);
+                        string finalpath = Path.Combine(path, fileName);
+
+                        using (var stream = new FileStream(
+
+                            finalpath, FileMode.Create
+
+                            ))
+                        {
+                            entity.oldImage.CopyTo(stream);
+                        }
+                        string pathDB = "Before/" + DateTime.Now.Year + "/" + DateTime.Now.Month;
+                        oldimage = pathDB + "/" + fileName;
                     }
 
-                }
+                    if (entity.newImage != null)
+                    {
 
-                dbContext.SaveChanges();
+                        string path = Directory.GetCurrentDirectory().Replace("\\", "/") + "/wwwroot/Files/After/" + DateTime.Now.Year + "/" + DateTime.Now.Month;
+                        if (!Directory.Exists(path))
+                            Directory.CreateDirectory(path);
+
+                        string fileName = Guid.NewGuid() + Path.GetFileName(entity.oldImage.FileName);
+                        string finalpath = Path.Combine(path, fileName);
+
+                        using (var stream = new FileStream(
+
+                            finalpath, FileMode.Create
+
+                            ))
+                        {
+                            entity.oldImage.CopyTo(stream);
+                        }
+                        string pathDB = "After/" + DateTime.Now.Year + "/" + DateTime.Now.Month;
+                        Newimage = pathDB + "/" + fileName;
+                    }
 
 
 
-                transaction.Commit();
-                return true;
+
+
+
+                    if (data != null)
+                    {
+                        data.isClosed = true;
+                        data.isClosedDate = DateTime.Now;
+                        data.ExecutedBy = entity.CreatedByuser;
+                        data.ExecutedAt = DateTime.Now;
+                        data.UpdatedAt = DateTime.Now;
+                        data.UpdatedBy = entity.CreatedByuser;
+                        data.ImgeOld = oldimage;
+                        data.ImgeNew = Newimage;
+                    }
+                    dbContext.SaveChanges();
+
+                    var datamastercount = dbContext.CheckListMasterDetails.Where(a => a.CheckListMasterID == data.CheckListMasterID && a.isClosed == null).Count();
+
+                    if (datamastercount == 0)
+                    {
+
+                        var datamaster = dbContext.CheckListMasters.Where(a => a.CheckListMasterID == data.CheckListMasterID).FirstOrDefault();
+                        if (datamaster != null)
+                        {
+                            datamaster.isClosed = true;
+                            datamaster.isClosedDate = DateTime.Now;
+                            datamaster.UpdatedBy = entity.CreatedByuser; ;
+                            datamaster.UpdatedAt = DateTime.Now;
+                        }
+
+                    }
+
+                    dbContext.SaveChanges();
+
+
+
+                    transaction.Commit();
+                    return true;
+                //}
+                //else
+                //{
+                //    return false;
+                //}
+               
             }
             catch (Exception)
             {

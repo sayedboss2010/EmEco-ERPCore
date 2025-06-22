@@ -134,25 +134,34 @@ $(document).on('click', '.edit-btn', function (e) {
 
                         for (var i = 0; i < res.equipment.length; i++) {
 
-                            $("#tbl tbody").append("<tr><td class='text-center'  style='padding:20px !important; font-weight: bold;'>" + res.equipment[i].equipmentName + "</td></tr>");
+                            $("#tbl tbody").append("<tr><td class='text-center'  style='padding:20px !important; font-weight: bold;'>  <input type='hidden' value=" + res.equipment[i].equipmentLocationID + ">" + res.equipment[i].equipmentName + "</td></tr>");
 
                         }
 
 
                         var columnCount = $('#tbl thead th').length;
 
+
+                        
                         // تعديل كل صف في tbody
                         var c = 1;
                         $('#tbl tbody tr').each(function () {
                             var firstCellText = $(this).find('td').text().trim(); // اسم المعدة
-                            var newRowHtml = '<td>' + firstCellText + '</td>'; // أول خلية
-
+                            var firstCellval = $(this).find('td').eq(0).find("input[type='hidden']").val();
+                             var newRowHtml = '<td><input type="hidden" value="' + firstCellval +'">' + firstCellText + '</td>'; // أول خلية
                             // باقي الأعمدة: checkboxes
                             for (var i = 1; i < columnCount; i++) {
 
                                 const table = document.getElementById('tbl');
+
+
+
+                         
+
+
                                 const secondHeaderCell = table.tHead.rows[0].cells[i];
                                 const hiddenInput = secondHeaderCell.getElementsByTagName('input')[0];
+
 
 
                                 newRowHtml += '<td>   <label class="ok">  <input type="radio"  name="col' + c + '_' + hiddenInput.value + '" value="1"> سليمة </label>    <label class="fault">  <input type="radio"  name="col' + c + '_' + hiddenInput.value + '" value="0"> بها عطل </label>   </td>';
@@ -163,7 +172,7 @@ $(document).on('click', '.edit-btn', function (e) {
                             // استبدال محتوى الصف
                             $(this).html(newRowHtml);
 
-
+                           
 
                             //$("#tblproduct TBODY TR").each(function () {
 
@@ -210,6 +219,12 @@ $(document).on('change', 'input[type="radio"]', function () {
     var checklistid = id.split('_')[1]
 
 
+    const row = this.closest("tr"); // نحصل على الصف
+    const firstCell = row.cells[0]; // أول عمود
+    const EquipmentLoaction = firstCell.querySelector("input[type='hidden']");
+    const EquipmentLocationID = EquipmentLoaction.value;
+
+
     var LocationID = $('#LocationID').val();
     var EquipmentTypeID = $('#EquipmentTypeID').val();
     var EquipmentID = $('#EquipmentID').val();
@@ -221,7 +236,7 @@ $(document).on('change', 'input[type="radio"]', function () {
         $.ajax({
             type: "Post",
             url: "/Checllist/savadata",
-            data: { checklistid: checklistid, LocationID: LocationID, EquipmentID: EquipmentID, PlanID: PlanID },
+            data: { checklistid: checklistid, LocationID: LocationID, EquipmentID: EquipmentID, PlanID: PlanID, EquipmentLocationID: EquipmentLocationID },
 
             async: false,
             success: function (res) {
@@ -238,13 +253,13 @@ $(document).on('change', 'input[type="radio"]', function () {
                         label.remove(); /*replaceWith('<span>سليمة</span>');*/
                         td.append('<span>سليمة</span>');
                     }
-
+                   
                   
 
                     jQuery.gritter.add({
                         position: lang == "ar" ? 'top-left' : 'top-right',
                         text: lang == "ar" ? "تم الحفظ بنجاح" : "Saved Successfully",
-                        class_name: 'growl-warning',
+                        class_name: 'growl-success',
                         sticky: false,
                         time: '1500',
                     });
@@ -278,6 +293,8 @@ $(document).on('change', 'input[type="radio"]', function () {
     else {
         $('#checklistid').val(checklistid);
         $('#checklistName').val(id);
+        $('#EquipmentLocationID').val(EquipmentLocationID);
+
         $('#tblproduct tbody').empty();
 
         $("#addUnivercityModal").appendTo('body').modal("show");
@@ -452,7 +469,7 @@ $(document).on('click', '.btnsava', function (e) {
     var PlanID = $('#PlanID').val();
     var rowsproduct = $('#tblproduct TBODY tr').length;
     var checklistid = $('#checklistid').val();
-   
+    var EquipmentLocationID = $('#EquipmentLocationID').val();
 
   
     if (Check == 1) {
@@ -514,7 +531,7 @@ $(document).on('click', '.btnsava', function (e) {
             $.ajax({
                 type: "POST",
                 url: "/Checllist/savadataDetails",
-                data: { checklistid:checklistid,LocationID: LocationID, EquipmentID: EquipmentID, PlanID: PlanID, products: products },
+                data: { checklistid: checklistid, LocationID: LocationID, EquipmentID: EquipmentID, PlanID: PlanID, products: products, EquipmentLocationID: EquipmentLocationID },
 
                 async: false,
                 success: function (result) {

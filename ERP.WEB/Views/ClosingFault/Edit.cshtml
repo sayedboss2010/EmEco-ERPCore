@@ -35,7 +35,7 @@
                         }
                     </div>
                 </div>
-                <form class="text-start" asp-action="Edit" method="post" enctype="multipart/form-data">
+                <form class="text-start" asp-action="Edit" id="Editt_form" method="post" enctype="multipart/form-data">
                    
                     <div class="shadow-blur">
                         <div class="card-header1">
@@ -69,6 +69,21 @@
                         </div>
 
                         <br /><br />
+                      @*   <div class="row">
+                            <div class="   col-md-3 col-sm-12"></div>
+                            <div class="   col-md-6 col-sm-12">
+                                <div class="input-group input-group-outline my-3 w-100 mx-sm-1 divTxt is-filled me-2 selected-option">
+                                    <label class="form-label">@(lang == "ar" ? " المخزن " : "  المخزن")</label>
+
+                                    <select class="form-control" name="StoreID" id="StoreID" asp-items="@(SelectList)ViewBag.ListDropstore">
+                                        <option value="0">@(lang == "ar" ? " ---------- " : " ---------- ")</option>
+                                    </select>
+
+                                </div>
+                            </div>
+                            <div class="   col-md-3 col-sm-12"></div>
+                        </div> *@
+                        <br />
                         <div class="row">
                             <div class="col-md-3 col-sm-12">
                                 
@@ -86,6 +101,7 @@
 
 
                         </div>
+                        <br />
                         <div class="row">
                             <div class="col-md-3 col-sm-12">
                             </div>
@@ -119,3 +135,5 @@
         </div>
     </div>
 </div>
+<script src="~/jquery/3.7.0/Content/Scripts/jquery-3.7.0.min.js"></script>
+<script src="~/modules/closingfault-module.js"></script>

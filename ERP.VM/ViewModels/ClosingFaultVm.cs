@@ -23,8 +23,10 @@ namespace ERP.VM.ViewModels
         public int CheckListMasterDetailID { get; set; }
         public IFormFile oldImage { get; set; }
         public IFormFile newImage { get; set; }
+        public int? StoreID { get; set; }
 
         public int CreatedByuser { get; set; }
+
 
         public List<CheckListMasterDetailVm> CheckListMasterDetails { get; set; } = new List<CheckListMasterDetailVm>();
 

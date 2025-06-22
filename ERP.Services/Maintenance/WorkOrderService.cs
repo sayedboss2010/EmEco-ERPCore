@@ -1,5 +1,4 @@
 ﻿using ERP.Repository.Repositories.Generic;
-using ERP.Repository.Repositories.Maintenance;
 using ERP.Services.Generic;
 using ERP.VM.HelperClasses;
 using ERP.VM.ViewModels;
@@ -11,13 +10,13 @@ using System.Threading.Tasks;
 
 namespace ERP.Services.Maintenance
 {
-    public class ClosingFaultService : IGenericService<ClosingFaultVm>
+    public class WorkOrderService : IGenericService<WorkOrderVm>
     {
-        private readonly IGenericRepo<ClosingFaultVm> _Closing;
-        public ClosingFaultService(IGenericRepo<ClosingFaultVm> Closing)
+        private readonly IGenericRepo<WorkOrderVm> _Order;
+        public WorkOrderService(IGenericRepo<WorkOrderVm> Order)
         {
 
-            _Closing = Closing;
+            _Order = Order;
 
         }
 
@@ -26,12 +25,12 @@ namespace ERP.Services.Maintenance
             throw new NotImplementedException();
         }
 
-        public long Add(ClosingFaultVm entity)
+        public long Add(WorkOrderVm entity)
         {
             throw new NotImplementedException();
         }
 
-        public bool CheckExist(ClosingFaultVm entity)
+        public bool CheckExist(WorkOrderVm entity)
         {
             throw new NotImplementedException();
         }
@@ -41,29 +40,38 @@ namespace ERP.Services.Maintenance
             throw new NotImplementedException();
         }
 
-        public ClosingFaultVm Find(long id)
-        {
-            return _Closing.Find(id);
-        }
-
-        public IList<CustomOption> GetListDrop()
-        {
-           return _Closing.GetListDrop();
-        }
-
-        public IList<ClosingFaultVm> List()
-        {
-           return  _Closing.List();
-        }
-
-        public IList<ClosingFaultVm> Search(string term)
+        public WorkOrderVm Find(long id)
         {
             throw new NotImplementedException();
         }
 
-        public bool Update(ClosingFaultVm entity)
+        public IList<CustomOption> GetListDrop()
         {
-            return _Closing.Update(entity);
+            throw new NotImplementedException();
+        }
+
+        public IList<WorkOrderVm> List()
+        {
+            try
+            {
+
+                return _Order.List();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public IList<WorkOrderVm> Search(string term)
+        {
+            return _Order.Search(term);
+        }
+
+        public bool Update(WorkOrderVm entity)
+        {
+            return _Order.Update(entity);
         }
     }
 }
