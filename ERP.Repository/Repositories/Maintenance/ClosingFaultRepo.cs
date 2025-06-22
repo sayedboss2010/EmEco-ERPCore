@@ -108,7 +108,7 @@ namespace ERP.Repository.Repositories.Maintenance
                            LocationName = z.LocationName,
                            CreatedAt = d.CreatedAt.ToString(),
                            planName = x.PlanName,
-                           CheckListMasterDetails= (from dd in dbContext.CheckListMasterDetails.Where(a => a.CheckListMasterID == d.CheckListMasterID)
+                           CheckListMasterDetails= (from dd in dbContext.CheckListMasterDetails.Where(a => a.CheckListMasterID == d.CheckListMasterID && a.isClosed == null)
                                                    join yy in dbContext.SpareParts on dd.SparePartID equals yy.SparePartID
                                                    join aa in dbContext.SparePartTypes on yy.SparePartTypeID equals aa.SparePartTypeID
                                                    select new CheckListMasterDetailVm { Quantity=dd.Quantity,CheckListMasterDetailID=dd.CheckListMasterDetailID,SparePartID=yy.SparePartID, SparePartName=yy.SparePartName,SparePartTypeName=aa.TypeName }).ToList()
