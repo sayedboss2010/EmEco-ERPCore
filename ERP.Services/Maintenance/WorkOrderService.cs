@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 
 namespace ERP.Services.Maintenance
 {
-    public class WorkOrderService : IGenericService<WorkOrderVm>
+    public class WorkOrderService : IGenericService<WorkOrderGroupVM>
     {
-        private readonly IGenericRepo<WorkOrderVm> _Order;
-        public WorkOrderService(IGenericRepo<WorkOrderVm> Order)
+        private readonly IGenericRepo<WorkOrderGroupVM> _Order;
+        public WorkOrderService(IGenericRepo<WorkOrderGroupVM> Order)
         {
 
             _Order = Order;
@@ -25,12 +25,12 @@ namespace ERP.Services.Maintenance
             throw new NotImplementedException();
         }
 
-        public long Add(WorkOrderVm entity)
+        public long Add(WorkOrderGroupVM entity)
         {
             throw new NotImplementedException();
         }
 
-        public bool CheckExist(WorkOrderVm entity)
+        public bool CheckExist(WorkOrderGroupVM entity)
         {
             throw new NotImplementedException();
         }
@@ -40,9 +40,9 @@ namespace ERP.Services.Maintenance
             throw new NotImplementedException();
         }
 
-        public WorkOrderVm Find(long id)
+        public WorkOrderGroupVM Find(long id)
         {
-            throw new NotImplementedException();
+            return _Order.Find(id);
         }
 
         public IList<CustomOption> GetListDrop()
@@ -50,7 +50,7 @@ namespace ERP.Services.Maintenance
             throw new NotImplementedException();
         }
 
-        public IList<WorkOrderVm> List()
+        public IList<WorkOrderGroupVM> List()
         {
             try
             {
@@ -64,12 +64,12 @@ namespace ERP.Services.Maintenance
             }
         }
 
-        public IList<WorkOrderVm> Search(string term)
+        public IList<WorkOrderGroupVM> Search(string term)
         {
             return _Order.Search(term);
         }
 
-        public bool Update(WorkOrderVm entity)
+        public bool Update(WorkOrderGroupVM entity)
         {
             return _Order.Update(entity);
         }

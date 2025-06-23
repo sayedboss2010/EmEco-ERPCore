@@ -17,6 +17,8 @@ namespace ERP.VM.ViewModels
         public int? EquipmentID { get; set; }
 
         public int? EquipmentLocationID { get; set; }
+        public long? ordernumber { get; set; }
+
 
         /// <summary>
         /// فيها مشكلة ام لا

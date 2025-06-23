@@ -1,5 +1,5 @@
 ﻿@{
-    @model List<ERP.VM.ViewModels.WorkOrderVm>
+    @model List<ERP.VM.ViewModels.WorkOrderGroupVM>
 
     var langCookies = Context.Request.Cookies.FirstOrDefault(c => c.Key == "Lang").Value;
     var lang = string.IsNullOrEmpty(langCookies) ? "ar" : langCookies;
@@ -95,16 +95,38 @@
                     </div>
 
                     <br />
-                    <center>
+                   @*  <center>
 
                     <button type="button" id="btnSearch" class="btn  edit-btn">بحث</button>
-                    </center>
+                    </center> *@
 
                     <div id="resultDiv">
 
-                        <table id="tbl" style="width: 102%;padding: -14px;margin: 4px; " border="1">
+
+
+                                              <table id="tbl"  style="width: 102%;padding: -14px;margin: 4px; " border="1">
+    <thead>
+        <tr>
+           <th>رقم امر الشغل</th>
+                               
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <!-- السطر الأساسي -->
+            <tr class="table-primary" style="background-color:#b7b1c7">
+                   <td>EM/ @item.WorkOrderNumber</td>
+            </tr>
+
+            <!-- سطر التفاصيل -->
+            <tr>
+                <td colspan="6">
+                    <div class="p-2">
+                        <strong>تفاصيل امر الشغل:</strong>
+                        <table class="table table-sm table-striped table-bordered mb-0 w-100">
                             <thead>
-                                <tr>
+                                <tr style="background-color:#6fa2eb  !important">
                                     <th>القائمة</th>
                                     <th>المعدة</th>
                                     <th>الموقع</th>
@@ -115,34 +137,48 @@
                                     <th>نوع قطع الغيار</th>
                                     <th>قطع الغيار</th>
                                     <th>كمية قطع الغيار</th>
-                                    <th>امر الشغل</th>
-
-                                </tr>
+@*                                     <th>امر الشغل</th>
+ *@                                </tr>
                             </thead>
                             <tbody>
-                                @foreach (var item in Model)
+                                @foreach (var detail in item.Details)
                                 {
-                                    <!-- السطر الأساسي -->
-                                    <tr class="table-primary" style="background-color:#b7b1c7">
-                                        <td>@item.CheckItem</td>
-                                        @* <td>@item.TypeName</td> *@
-                                        <td>@item.EquipmentName</td>
-                                        <td>@item.LocationName</td>
-                                        <td>@item.EquipmentLocationsName</td>
-                                        <td>@item.planName</td>
-                                        <td>@item.CreatedByUser</td>
-                                        <td>@item.Createddate</td>
-                                        <td>@item.SparePartTypeName</td>
-                                        <td>@item.SparePartName</td>
-                                        <td>@item.Quantity</td>
-                                        <td>  <input type="checkbox" class="my-check" value="@item.WorkOrderID"></td>
-
+                                    <tr style="background-color:#f8fdff !important">
+                                        <td>@detail.CheckItem</td>
+                                        <td>@detail.EquipmentName</td>
+                                        <td>@detail.LocationName</td>
+                                        <td>@detail.EquipmentLocationsName</td>
+                                        <td>@detail.planName</td>
+                                        <td>@detail.CreatedByUser</td>
+                                        <td>@detail.Createddate</td>
+                                        <td>@detail.SparePartTypeName</td>
+                                        <td>@detail.SparePartName</td>
+                                        <td>@detail.Quantity</td>
+                                      @*   <td colspan="3">
+                                            <a href="/ClosingFault/Edit/@detail.CheckListMasterDetailID">تعديل</a>
+                                        </td> *@
                                     </tr>
-
-                                    <!-- سطر التفاصيل -->
                                 }
+
+                                <!-- ✅ زرار بعد كل مجموعة -->
+                                <br />
+                                <tr>
+                                    <td colspan="12" class="text-center">
+                                        <a href="/WorkOrder/print/@item.WorkOrderNumber" class="btn btn-primary" target="_blank">
+                                     تنفيذ الإجراء على أمر الشغل رقم  EM/@item.WorkOrderNumber
+                                      </a>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+                        
 
 
                     </div>
@@ -160,4 +196,4 @@
 
 
 <script src="~/jquery/3.7.0/Content/Scripts/jquery-3.7.0.min.js"></script>
-<script src="~/modules/workorder-module.js"></script>
+@* <script src="~/modules/workorder-module.js"></script> *@

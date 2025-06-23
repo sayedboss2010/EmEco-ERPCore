@@ -2,7 +2,6 @@
 
 
 
-
 $(document).on('change', '#EquipmentTypeID', function (e) {
 
     var EquipmentTypeID = $(this).val();
@@ -148,7 +147,7 @@ $(document).on('click', '.edit-btn', function (e) {
                         $('#tbl tbody tr').each(function () {
                             var firstCellText = $(this).find('td').text().trim(); // اسم المعدة
                             var firstCellval = $(this).find('td').eq(0).find("input[type='hidden']").val();
-                             var newRowHtml = '<td><input type="hidden" value="' + firstCellval +'">' + firstCellText + '</td>'; // أول خلية
+                            var newRowHtml = '<td><input type="hidden" class="equ" value="' + firstCellval + '"><input type="hidden" class="order" value="0">' + firstCellText + '</td>'; // أول خلية
                             // باقي الأعمدة: checkboxes
                             for (var i = 1; i < columnCount; i++) {
 
@@ -211,7 +210,6 @@ $(document).on('click', '.edit-btn', function (e) {
 });
 
 
-
 $(document).on('change', 'input[type="radio"]', function () {
 
     var val = $(this).val();
@@ -221,14 +219,19 @@ $(document).on('change', 'input[type="radio"]', function () {
 
     const row = this.closest("tr"); // نحصل على الصف
     const firstCell = row.cells[0]; // أول عمود
-    const EquipmentLoaction = firstCell.querySelector("input[type='hidden']");
+    const EquipmentLoaction = firstCell.querySelector("input[type='hidden'].equ");
     const EquipmentLocationID = EquipmentLoaction.value;
 
+    const ordern = firstCell.querySelector("input[type='hidden'].order");
+    const ordernumber = ordern.value;
 
     var LocationID = $('#LocationID').val();
     var EquipmentTypeID = $('#EquipmentTypeID').val();
     var EquipmentID = $('#EquipmentID').val();
     var PlanID = $('#PlanID').val();
+
+
+
 
     if (val == 1) {
 
@@ -291,9 +294,11 @@ $(document).on('change', 'input[type="radio"]', function () {
 
     }
     else {
+       
         $('#checklistid').val(checklistid);
         $('#checklistName').val(id);
         $('#EquipmentLocationID').val(EquipmentLocationID);
+        $('#ordernumber').val(ordernumber);
 
         $('#tblproduct tbody').empty();
 
@@ -306,6 +311,8 @@ $(document).on('change', 'input[type="radio"]', function () {
 
             $('input[name="'+id+'"]').prop('checked', false);
         });
+
+       
 
     }
 
@@ -470,8 +477,10 @@ $(document).on('click', '.btnsava', function (e) {
     var rowsproduct = $('#tblproduct TBODY tr').length;
     var checklistid = $('#checklistid').val();
     var EquipmentLocationID = $('#EquipmentLocationID').val();
+    var ordernumber = $('#ordernumber').val();
 
-  
+   
+
     if (Check == 1) {
         if (LocationID == 0 ||  EquipmentID == 0 || PlanID == 0||rowsproduct == 0 ) {
 
@@ -528,28 +537,39 @@ $(document).on('click', '.btnsava', function (e) {
             });
 
 
+            var id = $('#checklistName').val();
+            var selectedRadio = $('input[name="' + id + '"]');
+           
             $.ajax({
                 type: "POST",
                 url: "/Checllist/savadataDetails",
-                data: { checklistid: checklistid, LocationID: LocationID, EquipmentID: EquipmentID, PlanID: PlanID, products: products, EquipmentLocationID: EquipmentLocationID },
+                data: { checklistid: checklistid, LocationID: LocationID, EquipmentID: EquipmentID, PlanID: PlanID, products: products, EquipmentLocationID: EquipmentLocationID, ordernumber: ordernumber },
 
                 async: false,
                 success: function (result) {
-
-
-
-
-
 
                     if (result > 0) {
 
                         var id= $('#checklistName').val();
                         var selectedRadio = $('input[name="' + id + '"]');
 
+                        var tr = selectedRadio.closest('tr');
+
+                        var orderInput = tr.find('input.order'); // استخدام jQuery بالكامل
+
+                        if (orderInput.val()==0) {
+                            orderInput.val(result); // تغيير القيمة
+                        }
+
+
                         if (selectedRadio.length > 0) {
                             var value = selectedRadio.val();
                             var td = selectedRadio.closest('td');     // نحصل على قيمة الراديو
                             var label = selectedRadio.closest('label');           // أقرب عنصر label
+
+
+
+
 
                             label.remove(); /*replaceWith('<span>سليمة</span>');*/
                             td.append('<span>بها عطل</span>');

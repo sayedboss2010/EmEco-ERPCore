@@ -9,6 +9,9 @@ namespace ERP.VM.ViewModels
     public class WorkOrderVm
     {
 
+
+          public long? WorkOrderNumber { get; set; }
+
         public int WorkOrderID { get; set; }
 
         public int? CheckListMasterDetailID { get; set; }

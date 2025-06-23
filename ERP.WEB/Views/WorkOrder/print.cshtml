@@ -1,5 +1,5 @@
 ﻿@{
-    @model List<ERP.VM.ViewModels.WorkOrderVm>
+    @model ERP.VM.ViewModels.WorkOrderGroupVM
     var langCookies = Context.Request.Cookies.FirstOrDefault(c => c.Key == "Lang").Value;
     var lang = string.IsNullOrEmpty(langCookies) ? "ar" : langCookies;
 
@@ -92,7 +92,7 @@
                             <td colspan="2"  class="header">@DateTime.Now.ToShortDateString()</td>
                             @* <td> / 2024</td> *@
                             <td class="header">التاريخ/Dated</td>
-                            <td colspan="2">EM/00000</td>
+                                <td colspan="2">EM/@Model.Details[0].WorkOrderNumber</td>
                             <td colspan="5" class="header">JOB ORDER رقم أمر العمل</td>
                         </tr>
 
@@ -155,7 +155,7 @@
 
                                @{
 
-                                foreach (var name in Model)
+                                foreach (var name in Model.Details)
                                 {
                                     if (!seen.Contains(name.SparePartTypeName))
                                     {
@@ -199,7 +199,7 @@
 
                         @{
 
-                            foreach (var name1 in Model)
+                            foreach (var name1 in Model.Details)
                             {
                                 if (!seen1.Contains(name1.SparePartName))
                                 {

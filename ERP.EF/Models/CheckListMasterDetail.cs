@@ -9,6 +9,8 @@ public partial class CheckListMasterDetail
 
     public int? CheckListMasterID { get; set; }
 
+    public long? WorkOrderNumber { get; set; }
+
     public int? SparePartID { get; set; }
 
     public int? Quantity { get; set; }
@@ -73,6 +75,4 @@ public partial class CheckListMasterDetail
     public virtual CheckListMaster CheckListMaster { get; set; }
 
     public virtual SparePart SparePart { get; set; }
-
-    public virtual ICollection<WorkOrder> WorkOrders { get; set; } = new List<WorkOrder>();
 }

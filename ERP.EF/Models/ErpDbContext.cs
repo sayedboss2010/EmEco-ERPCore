@@ -15,7 +15,7 @@ public partial class ErpDbContext : DbContext
         : base(options)
     {
     }
-
+    public virtual DbSet<DataToExcel> DataToExcels { get; set; }
 
     public virtual DbSet<CheckList> CheckLists { get; set; }
 
@@ -56,20 +56,6 @@ public partial class ErpDbContext : DbContext
     public virtual DbSet<Store> Stores { get; set; }
 
     public virtual DbSet<StoreInventory> StoreInventories { get; set; }
-
-    public virtual DbSet<WorkOrder> WorkOrders { get; set; }
-
-    public virtual DbSet<DataToExcel> DataToExcels { get; set; }
-
-    public partial class DataToExcel
-    {
-        public int Id { get; set; }
-
-        public string TableName { get; set; }
-
-        public long? LastReadedId { get; set; }
-    }
-
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         try
@@ -477,30 +463,6 @@ public partial class ErpDbContext : DbContext
             entity.HasOne(d => d.Store).WithMany(p => p.StoreInventories)
                 .HasForeignKey(d => d.StoreID)
                 .HasConstraintName("FK_StoreInventory_Store");
-        });
-
-        modelBuilder.Entity<WorkOrder>(entity =>
-        {
-            entity.HasKey(e => e.WorkOrderID).HasName("PK__WorkOrde__AE755175BB03452C");
-
-            entity.ToTable("WorkOrder");
-
-            entity.Property(e => e.CreatedAt)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime");
-            entity.Property(e => e.InventoryID).HasComment("رقم امر العمل");
-            entity.Property(e => e.IsActive).HasDefaultValue(true);
-            entity.Property(e => e.IsDeleted).HasDefaultValue(false);
-            entity.Property(e => e.Quantity).HasComment("الكمية المطلوبة");
-            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
-
-            entity.HasOne(d => d.CheckListMasterDetail).WithMany(p => p.WorkOrders)
-                .HasForeignKey(d => d.CheckListMasterDetailID)
-                .HasConstraintName("FK__WorkOrder__Check__5D95E53A");
-
-            entity.HasOne(d => d.SparePart).WithMany(p => p.WorkOrders)
-                .HasForeignKey(d => d.SparePartID)
-                .HasConstraintName("FK__WorkOrder__Spare__5E8A0973");
         });
 
         OnModelCreatingPartial(modelBuilder);

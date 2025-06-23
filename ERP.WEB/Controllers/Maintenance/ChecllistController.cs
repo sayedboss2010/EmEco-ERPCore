@@ -90,7 +90,7 @@ namespace ERP.WEB.Controllers.Maintenance
         }
 
         [HttpPost]
-        public IActionResult savadataDetails(int checklistid, int LocationID, int EquipmentID, int PlanID,  List<CheckListMasterDetailVm> products,int EquipmentLocationID)
+        public IActionResult savadataDetails(int checklistid, int LocationID, int EquipmentID, int PlanID,  List<CheckListMasterDetailVm> products,int EquipmentLocationID,long ordernumber)
         {
 
 
@@ -111,6 +111,7 @@ namespace ERP.WEB.Controllers.Maintenance
             checkListMasterdata.EquipmentID = EquipmentID;
             checkListMasterdata.CreatedBy = userId;
             checkListMasterdata.EquipmentLocationID = EquipmentLocationID;
+            checkListMasterdata.ordernumber = ordernumber;
 
 
             var lstEquipment = _Check.Add(checkListMasterdata);

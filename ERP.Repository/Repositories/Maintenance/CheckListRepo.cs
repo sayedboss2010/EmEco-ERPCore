@@ -33,7 +33,7 @@ namespace ERP.Repository.Repositories.Maintenance
             try
             {
                 dbContext.Database.UseTransaction(transaction.GetDbTransaction());
-
+                long? ordernumber = 1;
 
                 if (entity.CheckListMasterDetails.Count()==0)
                 {
@@ -76,39 +76,59 @@ namespace ERP.Repository.Repositories.Maintenance
                     dbContext.CheckListMasters.Add(CheckListMasterdata);
                     dbContext.SaveChanges();
 
+                   
+                    if (entity.ordernumber == 0)
+                    {
+                         ordernumber = dbContext.CheckListMasterDetails.OrderByDescending(a => a.WorkOrderNumber).Select(a => a.WorkOrderNumber).FirstOrDefault();
+                        if (ordernumber == null)
+                        {
+                            ordernumber = 1;
+                        }
+                        else
+                        {
+                            ordernumber++;
+                        }
+                    }
+                    else
+                    {
+                        ordernumber = entity.ordernumber;
+                    }
 
                     foreach (var item in entity.CheckListMasterDetails)
                     {
-                        //var QuantityStoreInventorytotal = dbContext.StoreInventories.Where(a => a.SparePartID == item.SparePartID).Select(a => a.Quantity).Sum();
-                        var CheckListMasterDetailsdata = new CheckListMasterDetail
-                        {
-                            CheckListMasterID = CheckListMasterdata.CheckListMasterID,
-                            SparePartID = item.SparePartID,
-                            Quantity = item.Quantity,
-                            CommentExecuted = item.CommentExecuted,
-                            CreatedBy = entity.CreatedBy,
-                            CreatedAt = DateTime.Now,
-                            ReviewedBy = entity.ReviewedBy,
-                            ReviewedAt = DateTime.Now,
-                            IsDeleted = false,
-                            IsActive = true,
-                            //QuantityStoreInventory = QuantityStoreInventorytotal,
-                        };
+                       
+
+                            //var QuantityStoreInventorytotal = dbContext.StoreInventories.Where(a => a.SparePartID == item.SparePartID).Select(a => a.Quantity).Sum();
+                            var CheckListMasterDetailsdata = new CheckListMasterDetail
+                            {
+                                CheckListMasterID = CheckListMasterdata.CheckListMasterID,
+                                SparePartID = item.SparePartID,
+                                Quantity = item.Quantity,
+                                CommentExecuted = item.CommentExecuted,
+                                CreatedBy = entity.CreatedBy,
+                                CreatedAt = DateTime.Now,
+                                ReviewedBy = entity.ReviewedBy,
+                                ReviewedAt = DateTime.Now,
+                                IsDeleted = false,
+                                IsActive = true,
+                                WorkOrderNumber = ordernumber,
+                                //QuantityStoreInventory = QuantityStoreInventorytotal,
+                            };
                         dbContext.CheckListMasterDetails.Add(CheckListMasterDetailsdata);
                         dbContext.SaveChanges();
 
-                        var WorkOrderdata = new WorkOrder
-                        {
-                            CheckListMasterDetailID = CheckListMasterDetailsdata.CheckListMasterDetailID,
-                            SparePartID = item.SparePartID,
-                            Quantity = item.Quantity,
-                            CreatedBy = entity.CreatedBy,
-                            CreatedAt = DateTime.Now,
-                            IsDeleted = false,
-                            IsActive = true,
-                        };
-                        dbContext.WorkOrders.Add(WorkOrderdata);
-                        dbContext.SaveChanges();
+                        //var WorkOrderdata = new WorkOrder
+                        //{
+                        //    CheckListMasterDetailID = CheckListMasterDetailsdata.CheckListMasterDetailID,
+                        //    SparePartID = item.SparePartID,
+                        //    Quantity = item.Quantity,
+                        //    CreatedBy = entity.CreatedBy,
+                        //    CreatedAt = DateTime.Now,
+                        //    IsDeleted = false,
+                        //    IsActive = true,
+                        //};
+                        //dbContext.WorkOrders.Add(WorkOrderdata);
+                        //dbContext.SaveChanges();
 
 
                     }
@@ -119,7 +139,7 @@ namespace ERP.Repository.Repositories.Maintenance
 
 
                 transaction.Commit();
-                return 1;
+                return (long)ordernumber;
             }
             catch (Exception ex )
             {

@@ -39,6 +39,4 @@ public partial class SparePart
     public virtual SparePartType SparePartType { get; set; }
 
     public virtual ICollection<StoreInventory> StoreInventories { get; set; } = new List<StoreInventory>();
-
-    public virtual ICollection<WorkOrder> WorkOrders { get; set; } = new List<WorkOrder>();
 }
