@@ -80,14 +80,33 @@
                                 </li>
 
                                 <li class="nav-item opacity-75">
-                                    <a class="nav-link text-white  @Html.isActive("Index", "ClosingFault")"
-                                       href="@Url.Action("Index", "ClosingFault", new { area = "" })">
+                                    <a class="nav-link text-white  @Html.isActive("Home", "ClosingFault")"
+                                       href="@Url.Action("Home", "ClosingFault", new { area = "" })">
                                         <div class="text-white text-center ms-2 d-flex align-items-center justify-content-center">
                                             <i class="material-icons opacity-10">apartment</i>&nbsp;
                                         </div>
                                         <span class="nav-link-text ms-1">@(lang == "ar" ? "متابعة الصيانة" : "Checl list")</span>
                                     </a>
-                              
+
+                                <li class="nav-item opacity-75">
+                                    <a class="nav-link text-white  @Html.isActive("Index", "WorkOrderPrint")"
+                                       href="@Url.Action("Index", "WorkOrderPrint", new { area = "" })">
+                                        <div class="text-white text-center ms-2 d-flex align-items-center justify-content-center">
+                                            <i class="material-icons opacity-10">apartment</i>&nbsp;
+                                        </div>
+                                        <span class="nav-link-text ms-1">@(lang == "ar" ? "طباعة امر الشغل المطبوعة" : "Checl list")</span>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item opacity-75">
+                                    <a class="nav-link text-white  @Html.isActive("Home", "ClosingFaultFinished")"
+                                       href="@Url.Action("Home", "ClosingFaultFinished", new { area = "" })">
+                                        <div class="text-white text-center ms-2 d-flex align-items-center justify-content-center">
+                                            <i class="material-icons opacity-10">apartment</i>&nbsp;
+                                        </div>
+                                        <span class="nav-link-text ms-1">@(lang == "ar" ? "الاعطال المنتهية" : "Checl list")</span>
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     </li>

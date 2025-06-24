@@ -8,17 +8,17 @@ namespace ERP.WEB.Controllers.Maintenance
 {
     public class ClosingFaultController : Controller
     {
-        private readonly IGenericService<ClosingFaultVm> _Check;
+        private readonly IGenericService<ClosingFaultGroupVm> _Check;
 
-        public ClosingFaultController(IGenericService<ClosingFaultVm> Check)
+        public ClosingFaultController(IGenericService<ClosingFaultGroupVm> Check)
         {
             _Check = Check;
 
         }
 
-        public IActionResult Index()
+        public IActionResult Home()
         {
-            var data=_Check.List();
+            var data = _Check.List();
             return View(data);
         }
 
@@ -41,24 +41,25 @@ namespace ERP.WEB.Controllers.Maintenance
 
             }
             int userId = int.Parse(Request.Cookies.FirstOrDefault(x => x.Key == "UserId").Value);
-            ClosingFaultVm data = new ClosingFaultVm();
-            data.CheckListMasterDetailID=CheckListMasterDetailID;
+            ClosingFaultGroupVm data = new ClosingFaultGroupVm();
+            data.CheckListMasterDetailID = CheckListMasterDetailID;
             data.oldImage = before;
             data.newImage = After;
-            data.CreatedByuser = userId;
+            data.UpdatedBy = userId;
             //data.StoreID = StoreID;
 
-           var dataresult= _Check.Update(data);
+            var dataresult = _Check.Update(data);
             if (dataresult == true)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Home");
             }
-            else {
+            else
+            {
 
                 TempData["NoQuantityavaiable"] = 1;
-            return RedirectToAction("Edit", new { id= CheckListMasterDetailID });
+                return RedirectToAction("Edit", new { id = CheckListMasterDetailID });
             }
-                
+
         }
     }
 }

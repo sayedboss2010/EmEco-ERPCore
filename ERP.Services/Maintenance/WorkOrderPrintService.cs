@@ -1,5 +1,4 @@
 ﻿using ERP.Repository.Repositories.Generic;
-using ERP.Repository.Repositories.Maintenance;
 using ERP.Services.Generic;
 using ERP.VM.HelperClasses;
 using ERP.VM.ViewModels;
@@ -11,13 +10,13 @@ using System.Threading.Tasks;
 
 namespace ERP.Services.Maintenance
 {
-    public class ClosingFaultService : IGenericService<ClosingFaultGroupVm>
+    public class WorkOrderPrintService: IGenericService<WorkOrderPrintGroupVM>
     {
-        private readonly IGenericRepo<ClosingFaultGroupVm> _Closing;
-        public ClosingFaultService(IGenericRepo<ClosingFaultGroupVm> Closing)
+        private readonly IGenericRepo<WorkOrderPrintGroupVM> _Order;
+        public WorkOrderPrintService(IGenericRepo<WorkOrderPrintGroupVM> Order)
         {
 
-            _Closing = Closing;
+            _Order = Order;
 
         }
 
@@ -26,12 +25,12 @@ namespace ERP.Services.Maintenance
             throw new NotImplementedException();
         }
 
-        public long Add(ClosingFaultGroupVm entity)
+        public long Add(WorkOrderPrintGroupVM entity)
         {
             throw new NotImplementedException();
         }
 
-        public bool CheckExist(ClosingFaultGroupVm entity)
+        public bool CheckExist(WorkOrderPrintGroupVM entity)
         {
             throw new NotImplementedException();
         }
@@ -41,29 +40,38 @@ namespace ERP.Services.Maintenance
             throw new NotImplementedException();
         }
 
-        public ClosingFaultGroupVm Find(long id)
+        public WorkOrderPrintGroupVM Find(long id)
         {
-            return _Closing.Find(id);
+            return _Order.Find(id);
         }
 
         public IList<CustomOption> GetListDrop()
         {
-           return _Closing.GetListDrop();
+            throw new NotImplementedException();
         }
 
-        public IList<ClosingFaultGroupVm> List()
+        public IList<WorkOrderPrintGroupVM> List()
         {
-           return  _Closing.List();
+            try
+            {
+
+                return _Order.List();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
-        public IList<ClosingFaultGroupVm> Search(string term)
+        public IList<WorkOrderPrintGroupVM> Search(string term)
         {
             throw new NotImplementedException();
         }
 
-        public bool Update(ClosingFaultGroupVm entity)
+        public bool Update(WorkOrderPrintGroupVM entity)
         {
-            return _Closing.Update(entity);
+            throw new NotImplementedException();
         }
     }
 }

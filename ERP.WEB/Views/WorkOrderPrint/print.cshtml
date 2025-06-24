@@ -1,0 +1,285 @@
+﻿@{
+    @model ERP.VM.ViewModels.WorkOrderPrintGroupVM
+    var langCookies = Context.Request.Cookies.FirstOrDefault(c => c.Key == "Lang").Value;
+    var lang = string.IsNullOrEmpty(langCookies) ? "ar" : langCookies;
+
+    ViewData["Title"] = lang == "ar" ? " القائمة " : " check list";
+}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        direction: ltr;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: center;
+    }
+
+    th, td {
+        border: 1px solid #000;
+        padding: 6px;
+        font-size: 14px;
+    }
+
+    .header {
+        background-color: #f2f2f2;
+        font-weight: bold;
+    }
+
+    .section-title {
+        background-color: #ddd;
+        font-weight: bold;
+    }
+
+    input[type="checkbox"] {
+        transform: scale(1.2);
+    }
+
+    .logo {
+        height: 50px;
+    }
+
+    .centered {
+        text-align: center;
+    }
+</style>
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 my-2 pt-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10" style="text-align:center">
+                        @if (ViewBag.Error != null && ViewBag.Error != "")
+                        {
+                            <div class="alert alert-danger alert-dismissible fade show">
+                                <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <b class="alert-link"> @ViewBag.Error </b>
+                            </div>
+                        }
+                        @if (ViewBag.Success != null && ViewBag.Success != "")
+                        {
+                            <div class="alert alert-success alert-dismissible fade show">
+                                <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <b class="alert-link"> @ViewBag.Success </b>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <form class="text-start" asp-action="Edit" id="Editt_form" method="post" enctype="multipart/form-data">
+                    <input type="hidden" id="WorkOrderNumberId" value="@Model.Details[0].WorkOrderNumber" />
+                    <div id="printMe">
+                        <table>
+                            <!-- Header Row -->
+                            <tr>
+                                <td colspan="2"><img src="@Url.Content("~/logo/logo-2.png")" class="logo" alt="Logo 1"></td>
+                                <td colspan="6" class="centered"><strong>REPAIR JOB ORDER<br>أمر عمل صيانة</strong></td>
+                                <td colspan="2"><img src="@Url.Content("~/logo/logo20.PNG")" class="logo" alt="Logo 2"></td>
+                            </tr>
+
+                            <!-- مكان العطل -->
+                            <tr>
+                                <td colspan="10">مكان العطل</td>
+                            </tr>
+
+                            <!-- التاريخ والرقم -->
+                            <tr>
+                                <td colspan="2" class="header">@DateTime.Now.ToShortDateString()</td>
+                                @* <td> / 2024</td> *@
+                                <td class="header">التاريخ/Dated</td>
+                                <td colspan="2">EM/@Model.Details[0].WorkOrderNumber</td>
+                                <td colspan="5" class="header">JOB ORDER رقم أمر العمل</td>
+                            </tr>
+
+                            <tr>
+                                <td style="direction: rtl" colspan="3" class="header"> Time : @DateTime.Now.ToShortTimeString()  </td>
+
+                                <td colspan="7" class="header"> @DateTime.Now.ToShortTimeString() : الوقت </td>
+                            </tr>
+
+                            <!-- المبنى والقسم -->
+                            <tr>
+                                <td class="header">BUILDING/ FLOOR</td>
+                                <td> DEPARTMENT</td>
+                                <td class="header">ROOM NO</td>
+
+                                <td colspan="2">القسم</td>
+                                <td colspan="5" class="header">  المبنى / الدور</td>
+                            </tr>
+
+                            <tr>
+                                <td class="header"></td>
+                                <td> </td>
+                                <td class="header"></td>
+
+                                <td colspan="2"></td>
+                                <td colspan="5" class="header">/الرئيسى  </td>
+                            </tr>
+
+                            <tr>
+                                <td class="header">Requested :</td>
+                                <td></td>
+
+                                @*                             <td width: 50px></td>
+                            *@
+                                <td class="header">Ext  No :  </td>
+
+                                <td colspan="2"></td>
+                                <td colspan="2" class="header">/رقم هاتف  </td>
+                                <td colspan="2"></td>
+                                <td colspan="1" class="header">/المبلغ  </td>
+                            </tr>
+
+
+
+                            <!-- نوع العمل -->
+                            <tr>
+                                <td colspan="10" class="section-title">نوع العمل / Work type</td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="10" style="height: 80px;"></td>
+                            </tr>
+                            <!-- أنواع الصيانة -->
+                            <tr>
+                                @{
+                                    string SparePartType = "";
+                                }
+
+                                @{
+                                    List<string> seen = new List<string>();
+                                }
+
+                                @{
+
+                                    foreach (var name in Model.Details)
+                                    {
+                                        if (!seen.Contains(name.SparePartTypeName))
+                                        {
+                                            seen.Add(name.SparePartTypeName); //
+                                        }
+                                    }
+
+                                }
+
+
+
+                                @for (int i = 0; i < seen.Count(); i++)
+                                {
+                                    SparePartType += seen[i];
+                                    if (i != seen.Count - 1)
+                                    {
+
+                                        SparePartType += " - ";
+                                    }
+                                }
+
+
+                                <td colspan="10">@SparePartType</td>
+
+                                <!-- وصف العمل -->
+                            <tr>
+                                <td colspan="10" class="section-title">وصف العمل المطلوب / WORK DESCRIPTION</td>
+                            </tr>
+                            <tr>
+                                <td colspan="10" style="height: 80px;"></td>
+                            </tr>
+
+                            <!-- وصف قطع الغيار -->
+                            @{
+                                string SparePart = "";
+                            }
+
+                            @{
+                                List<string> seen1 = new List<string>();
+                            }
+
+                            @{
+
+                                foreach (var name1 in Model.Details)
+                                {
+                                    if (!seen1.Contains(name1.SparePartName))
+                                    {
+                                        seen1.Add(name1.SparePartName); //
+                                    }
+                                }
+
+                            }
+
+
+
+                            @for (int i = 0; i < seen1.Count(); i++)
+                            {
+                                SparePart += seen1[i];
+                                if (i != seen1.Count - 1)
+                                {
+
+                                    SparePart += " - ";
+                                }
+                            }
+                            <tr>
+                                <td colspan="10" class="section-title">وصف قطع الغيار المطلوبة</td>
+                            </tr>
+                            <tr>
+                                <td colspan="10" style="height: 60px;">@SparePart</td>
+                            </tr>
+
+                            <!-- حالة الإكمال -->
+                            <tr>
+                                <td colspan="2"><input type="checkbox"></td>
+                                <td colspan="8">تم الإصلاح / COMPLETE</td>
+                            </tr>
+                            <tr class="section-title">
+                                <td colspan="3">توقيع المالك</td>
+
+                                <td colspan="4">توقيع جهة الإشراف الصيانة (الاستشاري)</td>
+                                <td colspan="3">توقيع مهندس القسم (شؤون الصيانة)</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" style="height: 50px;"></td>
+                                <td colspan="4" style="height: 50px;"></td>
+                                <td colspan="4" style="height: 50px;"></td>
+                            </tr>
+                            <tr class="header">
+
+
+                                <td colspan="3"></td>
+
+                                <td colspan="2">Time : @DateTime.Now.ToShortTimeString()</td>
+                                <td colspan="2">@DateTime.Now.ToShortTimeString() : الوقت </td>
+                                <td colspan="3">
+                                    2024 / / &nbsp;&nbsp;&nbsp; تاريخ نهاية العمل
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <br /><br />
+                    <div class="row shadow-blur">
+                        <div class="col-md-4"></div>
+                        <div class=" col-md-4 text-center">
+                            <button onclick="printDiv('printMe')" type="button" class="btn btn-grd-primary btn-slack  btnPrint">
+                                <i class="fa fa-check"></i>&nbsp;&nbsp;@(lang == "ar" ? "طباعة" : "print")
+                            </button>
+                        </div>
+                        <div class="col-md-4"></div>
+                    </div>
+                    <br />
+                    <br />
+                    <br />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/jquery/3.7.0/Content/Scripts/jquery-3.7.0.min.js"></script>
+
+<script src="~/modules/PrintAgain-module.js"></script>
+
+
+

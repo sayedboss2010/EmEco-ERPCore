@@ -1,5 +1,4 @@
 ﻿using ERP.Repository.Repositories.Generic;
-using ERP.Repository.Repositories.Maintenance;
 using ERP.Services.Generic;
 using ERP.VM.HelperClasses;
 using ERP.VM.ViewModels;
@@ -11,10 +10,10 @@ using System.Threading.Tasks;
 
 namespace ERP.Services.Maintenance
 {
-    public class ClosingFaultService : IGenericService<ClosingFaultGroupVm>
+    public class ClosingFaultFinishedService : IGenericService<ClosingFaultFinIshedGroupVm>
     {
-        private readonly IGenericRepo<ClosingFaultGroupVm> _Closing;
-        public ClosingFaultService(IGenericRepo<ClosingFaultGroupVm> Closing)
+        private readonly IGenericRepo<ClosingFaultFinIshedGroupVm> _Closing;
+        public ClosingFaultFinishedService(IGenericRepo<ClosingFaultFinIshedGroupVm> Closing)
         {
 
             _Closing = Closing;
@@ -26,12 +25,12 @@ namespace ERP.Services.Maintenance
             throw new NotImplementedException();
         }
 
-        public long Add(ClosingFaultGroupVm entity)
+        public long Add(ClosingFaultFinIshedGroupVm entity)
         {
             throw new NotImplementedException();
         }
 
-        public bool CheckExist(ClosingFaultGroupVm entity)
+        public bool CheckExist(ClosingFaultFinIshedGroupVm entity)
         {
             throw new NotImplementedException();
         }
@@ -41,29 +40,29 @@ namespace ERP.Services.Maintenance
             throw new NotImplementedException();
         }
 
-        public ClosingFaultGroupVm Find(long id)
-        {
-            return _Closing.Find(id);
-        }
-
-        public IList<CustomOption> GetListDrop()
-        {
-           return _Closing.GetListDrop();
-        }
-
-        public IList<ClosingFaultGroupVm> List()
-        {
-           return  _Closing.List();
-        }
-
-        public IList<ClosingFaultGroupVm> Search(string term)
+        public ClosingFaultFinIshedGroupVm Find(long id)
         {
             throw new NotImplementedException();
         }
 
-        public bool Update(ClosingFaultGroupVm entity)
+        public IList<CustomOption> GetListDrop()
         {
-            return _Closing.Update(entity);
+            throw new NotImplementedException();
+        }
+
+        public IList<ClosingFaultFinIshedGroupVm> List()
+        {
+            return _Closing.List();
+        }
+
+        public IList<ClosingFaultFinIshedGroupVm> Search(string term)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Update(ClosingFaultFinIshedGroupVm entity)
+        {
+            throw new NotImplementedException();
         }
     }
 }

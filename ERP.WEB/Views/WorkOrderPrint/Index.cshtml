@@ -1,5 +1,5 @@
 ﻿@{
-    @model List<ERP.VM.ViewModels.WorkOrderGroupVM>
+    @model List<ERP.VM.ViewModels.WorkOrderPrintGroupVM>
 
     var langCookies = Context.Request.Cookies.FirstOrDefault(c => c.Key == "Lang").Value;
     var lang = string.IsNullOrEmpty(langCookies) ? "ar" : langCookies;
@@ -88,7 +88,7 @@
                     <div class="shadow-blur">
                         <div class="card-header1">
                             <center>
-                                <h5> امر الشغل </h5>
+                                <h5> طباعة امر الشغل </h5>
                             </center>
                         </div>
 
@@ -164,8 +164,8 @@
                                 <br />
                                 <tr>
                                     <td colspan="12" class="text-center">
-                                        <a href="/WorkOrder/print/@item.WorkOrderNumber" class="btn btn-primary">
-                                     تنفيذ الإجراء على أمر الشغل رقم  EM/@item.WorkOrderNumber
+                                        <a href="/WorkOrderPrint/print/@item.WorkOrderNumber" class="btn btn-primary">
+                                    طباعة  EM/@item.WorkOrderNumber
                                       </a>
                                     </td>
                                 </tr>

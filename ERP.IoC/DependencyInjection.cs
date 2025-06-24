@@ -29,11 +29,18 @@ public static class DependencyInjection
         services.AddScoped<ICheckListRepo, CheckListRepo>();
         services.AddScoped<ICheckListService, CheckListService>();
 
-        services.AddScoped<IGenericRepo<ClosingFaultVm>, ClosingFaultRepo>();
-        services.AddScoped<IGenericService<ClosingFaultVm>, ClosingFaultService>();
+        services.AddScoped<IGenericRepo<ClosingFaultGroupVm>, ClosingFaultRepo>();
+        services.AddScoped<IGenericService<ClosingFaultGroupVm>, ClosingFaultService>();
 
         services.AddScoped<IGenericRepo<WorkOrderGroupVM>, WorkOrderRepo>();
         services.AddScoped<IGenericService<WorkOrderGroupVM>, WorkOrderService>();
+
+        services.AddScoped<IGenericRepo<WorkOrderPrintGroupVM>, WorkOrderPrintRepo>();
+        services.AddScoped<IGenericService<WorkOrderPrintGroupVM>, WorkOrderPrintService>();
+
+        services.AddScoped<IGenericRepo<ClosingFaultFinIshedGroupVm>, ClosingFaultFinishedRepo>();
+        services.AddScoped<IGenericService<ClosingFaultFinIshedGroupVm>, ClosingFaultFinishedService>();
+
         //Auto Mapper Configurations
         var mapperConfig = new MapperConfiguration(mc =>
         {

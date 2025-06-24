@@ -1,5 +1,5 @@
 ﻿@{
-    @model List<ERP.VM.ViewModels.WorkOrderGroupVM>
+    @model List<ERP.VM.ViewModels.ClosingFaultGroupVm>
 
     var langCookies = Context.Request.Cookies.FirstOrDefault(c => c.Key == "Lang").Value;
     var lang = string.IsNullOrEmpty(langCookies) ? "ar" : langCookies;
@@ -88,7 +88,7 @@
                     <div class="shadow-blur">
                         <div class="card-header1">
                             <center>
-                                <h5> امر الشغل </h5>
+                                <h5>اغلاق الاعطال </h5>
                             </center>
                         </div>
 
@@ -137,8 +137,8 @@
                                     <th>نوع قطع الغيار</th>
                                     <th>قطع الغيار</th>
                                     <th>كمية قطع الغيار</th>
-@*                                     <th>امر الشغل</th>
- *@                                </tr>
+                                    <th>اغلاق</th>
+                                </tr>
                             </thead>
                             <tbody>
                                 @foreach (var detail in item.Details)
@@ -154,21 +154,14 @@
                                         <td>@detail.SparePartTypeName</td>
                                         <td>@detail.SparePartName</td>
                                         <td>@detail.Quantity</td>
-                                      @*   <td colspan="3">
+                                        <td>
                                             <a href="/ClosingFault/Edit/@detail.CheckListMasterDetailID">تعديل</a>
-                                        </td> *@
+                                        </td>
                                     </tr>
                                 }
 
-                                <!-- ✅ زرار بعد كل مجموعة -->
-                                <br />
-                                <tr>
-                                    <td colspan="12" class="text-center">
-                                        <a href="/WorkOrder/print/@item.WorkOrderNumber" class="btn btn-primary">
-                                     تنفيذ الإجراء على أمر الشغل رقم  EM/@item.WorkOrderNumber
-                                      </a>
-                                    </td>
-                                </tr>
+                               
+                              
                             </tbody>
                         </table>
                     </div>

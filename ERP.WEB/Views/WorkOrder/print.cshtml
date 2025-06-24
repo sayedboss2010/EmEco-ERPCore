@@ -73,6 +73,7 @@
                 </div>
 
 <form class="text-start" asp-action="Edit" id="Editt_form" method="post" enctype="multipart/form-data">
+                    <input type="hidden" id="WorkOrderNumberId" value="@Model.Details[0].WorkOrderNumber" />
                     <div id="printMe">
     <table>
                         <!-- Header Row -->

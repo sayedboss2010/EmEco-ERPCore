@@ -72,6 +72,8 @@ public partial class CheckListMasterDetail
 
     public string ImgeNew { get; set; }
 
+    public bool? IsPrint { get; set; }
+
     public virtual CheckListMaster CheckListMaster { get; set; }
 
     public virtual SparePart SparePart { get; set; }

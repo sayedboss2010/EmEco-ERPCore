@@ -28,3 +28,12 @@ Scaffold-DbContext "Server=.;Database=PreventiveMaintenanceDB;Trusted_Connection
           //ignore
       }
   }
+
+  public partial class DataToExcel
+{
+    public int Id { get; set; }
+
+    public string TableName { get; set; }
+
+    public long? LastReadedId { get; set; }
+}

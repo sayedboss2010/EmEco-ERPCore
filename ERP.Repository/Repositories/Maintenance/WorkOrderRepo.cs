@@ -58,7 +58,7 @@ namespace ERP.Repository.Repositories.Maintenance
 
                 var list = new List<WorkOrderVm>();
 
-                list = (from aa in dbContext.CheckListMasterDetails.Where(a => a.isClosed == null && a.WorkOrderNumber == id)
+                list = (from aa in dbContext.CheckListMasterDetails.Where(a => a.isClosed == null && a.WorkOrderNumber == id && a.IsPrint==null)
 
                         join d in dbContext.CheckListMasters on aa.CheckListMasterID equals d.CheckListMasterID
 
@@ -117,7 +117,7 @@ namespace ERP.Repository.Repositories.Maintenance
             var list = new List<WorkOrderGroupVM>();
 
                               list = (
-                    from dd in dbContext.CheckListMasterDetails.Where(a => a.isClosed == null)
+                    from dd in dbContext.CheckListMasterDetails.Where(a => a.isClosed == null && a.IsPrint == null)
                     join d in dbContext.CheckListMasters on dd.CheckListMasterID equals d.CheckListMasterID
                     join y in dbContext.CheckLists on d.CheckListID equals y.CheckListID
                     join a in dbContext.EquipmentTypes on y.EquipmentTypeID equals a.EquipmentTypeID
@@ -285,20 +285,21 @@ namespace ERP.Repository.Repositories.Maintenance
             {
                 dbContext.Database.UseTransaction(transaction.GetDbTransaction());
 
-                //foreach (var item in entity.Ids)
-                //{
-                //    var datafound = dbContext.WorkOrders.Find(item);
-                //    if (datafound != null)
-                //    {
-                //        datafound.InstallationStatus = true;
-                //        datafound.UpdatedBy = entity.UpdatedBy;
-                //        datafound.UpdatedAt = DateTime.Now;
+                var data= dbContext.CheckListMasterDetails.Where(a=>a.WorkOrderNumber==entity.WorkOrderNumber).ToList();
+                foreach (var item in data)
+                {
+                    var datafound = dbContext.CheckListMasterDetails.Find(item.CheckListMasterDetailID);
+                    if (datafound != null)
+                    {
+                       datafound.IsPrint = true;
+                        datafound.UpdatedBy = entity.UpdatedBy;
+                        datafound.UpdatedAt = DateTime.Now;
 
-                //    }
-                //    dbContext.SaveChanges();
-                //}
+                    }
+                    dbContext.SaveChanges();
+                }
 
-                //transaction.Commit();
+                transaction.Commit();
 
                 return true;
             }

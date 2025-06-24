@@ -1,5 +1,5 @@
 ﻿@{
-    @model List<ERP.VM.ViewModels.WorkOrderGroupVM>
+    @model List<ERP.VM.ViewModels.ClosingFaultFinIshedGroupVm>
 
     var langCookies = Context.Request.Cookies.FirstOrDefault(c => c.Key == "Lang").Value;
     var lang = string.IsNullOrEmpty(langCookies) ? "ar" : langCookies;
@@ -88,7 +88,7 @@
                     <div class="shadow-blur">
                         <div class="card-header1">
                             <center>
-                                <h5> امر الشغل </h5>
+                                <h5>الاعطال المنتهية</h5>
                             </center>
                         </div>
 
@@ -134,11 +134,12 @@
                                     <th>الخطة</th>
                                     <th>المسئول عن العطل</th>
                                     <th>تاريخ العطل</th>
+                                     <th>تاريخ انهاء العطل</th>
                                     <th>نوع قطع الغيار</th>
                                     <th>قطع الغيار</th>
                                     <th>كمية قطع الغيار</th>
-@*                                     <th>امر الشغل</th>
- *@                                </tr>
+                                    
+                                </tr>
                             </thead>
                             <tbody>
                                 @foreach (var detail in item.Details)
@@ -151,24 +152,16 @@
                                         <td>@detail.planName</td>
                                         <td>@detail.CreatedByUser</td>
                                         <td>@detail.Createddate</td>
+                                        <td>@detail.UpdatedAt.ToString()</td>
                                         <td>@detail.SparePartTypeName</td>
                                         <td>@detail.SparePartName</td>
                                         <td>@detail.Quantity</td>
-                                      @*   <td colspan="3">
-                                            <a href="/ClosingFault/Edit/@detail.CheckListMasterDetailID">تعديل</a>
-                                        </td> *@
+                                        
                                     </tr>
                                 }
 
-                                <!-- ✅ زرار بعد كل مجموعة -->
-                                <br />
-                                <tr>
-                                    <td colspan="12" class="text-center">
-                                        <a href="/WorkOrder/print/@item.WorkOrderNumber" class="btn btn-primary">
-                                     تنفيذ الإجراء على أمر الشغل رقم  EM/@item.WorkOrderNumber
-                                      </a>
-                                    </td>
-                                </tr>
+                               
+                              
                             </tbody>
                         </table>
                     </div>
