@@ -60,6 +60,10 @@ namespace ERP.VM.ViewModels
 
         public string? SparePartTypeName { get; set; }
         public string? EquipmentLocationsName { get; set; }
+        public string? imageBefore { get; set; }
+
+        public string? imageAfter { get; set; }
+
 
         public virtual List<int> Ids { get; set; } = new List<int>();
 

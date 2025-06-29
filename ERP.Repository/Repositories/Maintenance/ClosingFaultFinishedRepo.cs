@@ -57,6 +57,7 @@ namespace ERP.Repository.Repositories.Maintenance
 
         public IList<ClosingFaultFinIshedGroupVm> List()
         {
+
             try
             {
                 using var dbContext = new ErpDbContext();
@@ -93,7 +94,9 @@ namespace ERP.Repository.Repositories.Maintenance
           yy.SparePartName,
           SparePartTypes = cc.TypeName,
           dd.Quantity,
-          dd.isClosedDate
+          dd.isClosedDate,
+          dd.ImgeNew,
+          dd.ImgeOld,
       })
       .AsEnumerable()
       .GroupBy(x => x.WorkOrderNumber)
@@ -115,7 +118,9 @@ namespace ERP.Repository.Repositories.Maintenance
               planName = x.PlanName,
               SparePartName = x.SparePartName,
               SparePartTypeName = x.SparePartTypes,
-              UpdatedAt=x.isClosedDate
+              UpdatedAt=x.isClosedDate,
+              imageAfter = x.ImgeNew,
+              imageBefore = x.ImgeOld
           }).ToList()
       })
       .ToList();
