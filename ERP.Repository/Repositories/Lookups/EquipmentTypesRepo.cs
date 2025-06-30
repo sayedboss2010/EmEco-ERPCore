@@ -12,12 +12,12 @@ using System.Threading.Tasks;
 
 namespace ERP.Repository.Repositories.Lookups
 {
-    public class LocationRepo : IGenericRepo<LocationVm>
+    public class EquipmentTypesRepo : IGenericRepo<EquipmentTypeVm>
     {
         private readonly IMapper _mapper;
         private readonly IHelperRepo _helper;
 
-        public LocationRepo(IMapper mapper, IHelperRepo helper)
+        public EquipmentTypesRepo(IMapper mapper, IHelperRepo helper)
         {
             _mapper = mapper;
             _helper = helper;
@@ -25,7 +25,7 @@ namespace ERP.Repository.Repositories.Lookups
         public bool ActivateEntity(long id, bool isActive, int userId)
         {
             using var dbContext = new ErpDbContext();
-            var obj = dbContext.Locations.Find((int)id);
+            var obj = dbContext.EquipmentTypes.Find((int)id);
 
             if (obj != null)
             {
@@ -42,11 +42,11 @@ namespace ERP.Repository.Repositories.Lookups
             return false;
         }
 
-        public long Add(LocationVm entity)
+        public long Add(EquipmentTypeVm entity)
         {
             try
             {
-                var obj = _mapper.Map<LocationVm, Location>(entity);
+                var obj = _mapper.Map<EquipmentTypeVm, EquipmentType>(entity);
 
                 using var dbContext = new ErpDbContext();
 
@@ -55,10 +55,10 @@ namespace ERP.Repository.Repositories.Lookups
                 obj.IsDeleted = false;
                 obj.CreatedAt = DateTime.Now;
 
-                dbContext.Locations.Add(obj);
+                dbContext.EquipmentTypes.Add(obj);
                 dbContext.SaveChanges();
 
-                return obj.LocationID;
+                return obj.EquipmentTypeID;
             }
             catch (Exception)
             {
@@ -67,21 +67,21 @@ namespace ERP.Repository.Repositories.Lookups
             }
         }
 
-        public bool CheckExist(LocationVm entity)
+        public bool CheckExist(EquipmentTypeVm entity)
         {
             using var dbContext = new ErpDbContext();
 
             var exist = false;
-            if (entity.LocationID == 0)
+            if (entity.EquipmentTypeID == 0)
             {
-                exist = dbContext.Locations
-                    .Any(u => u.IsActive==true && u.IsDeleted == false && u.LocationName == entity.LocationName );
+                exist = dbContext.EquipmentTypes
+                    .Any(u => u.IsActive == true && u.IsDeleted == false && u.TypeName == entity.TypeName);
             }
             else
             {
-                exist = dbContext.Locations
+                exist = dbContext.EquipmentTypes
                     .Any(u => u.IsActive == true && u.IsDeleted == false
-                    && u.LocationID != entity.LocationID && u.LocationName == entity.LocationName );
+                    && u.EquipmentTypeID != entity.EquipmentTypeID && u.TypeName == entity.TypeName);
             }
 
             return !exist;
@@ -90,7 +90,7 @@ namespace ERP.Repository.Repositories.Lookups
         public bool Delete(long id, int userId)
         {
             using var dbContext = new ErpDbContext();
-            var obj = dbContext.Locations.Find((int)id);
+            var obj = dbContext.EquipmentTypes.Find((int)id);
 
             if (obj != null)
             {
@@ -104,15 +104,15 @@ namespace ERP.Repository.Repositories.Lookups
             return false;
         }
 
-        public LocationVm Find(long id)
+        public EquipmentTypeVm Find(long id)
         {
             using var dbContext = new ErpDbContext();
-            var obj = dbContext.Locations.Find((int)id);
+            var obj = dbContext.EquipmentTypes.Find((int)id);
 
             if (obj == null)
-                return new LocationVm();
+                return new EquipmentTypeVm();
 
-            return _mapper.Map<LocationVm>(obj);
+            return _mapper.Map<EquipmentTypeVm>(obj);
         }
 
         public IList<CustomOption> GetListDrop()
@@ -121,36 +121,38 @@ namespace ERP.Repository.Repositories.Lookups
 
         }
 
-        public IList<LocationVm> List()
+        public IList<EquipmentTypeVm> List()
         {
             using var dbContext = new ErpDbContext();
-            var lst = dbContext.Locations.Where(f =>
-             f.IsDeleted == false).Select(f => new LocationVm
+            var lst = dbContext.EquipmentTypes.Where(f =>
+             f.IsDeleted == false).Select(f => new EquipmentTypeVm
              {
-                 LocationID = f.LocationID,
-                 LocationName = f.LocationName,
+                 EquipmentTypeID = f.EquipmentTypeID,
+                 TypeName = f.TypeName,
+                 Description = f.Description,
                  IsActive = f.IsActive
              }).ToList();
 
-            return _mapper.Map<List<LocationVm>>(lst);
+            return _mapper.Map<List<EquipmentTypeVm>>(lst);
         }
 
-        public IList<LocationVm> Search(string term)
+        public IList<EquipmentTypeVm> Search(string term)
         {
             using var dbContext = new ErpDbContext();
-            var lst = dbContext.Locations.Where(f =>  f.LocationName.Contains(term) ).ToList();
+            var lst = dbContext.EquipmentTypes.Where(f => f.TypeName.Contains(term)).ToList();
 
-            return _mapper.Map<List<LocationVm>>(lst);
+            return _mapper.Map<List<EquipmentTypeVm>>(lst);
         }
 
-        public bool Update(LocationVm entity)
+        public bool Update(EquipmentTypeVm entity)
         {
             using var dbContext = new ErpDbContext();
-            var obj = dbContext.Locations.Find(entity.LocationID);
+            var obj = dbContext.EquipmentTypes.Find(entity.EquipmentTypeID);
 
             if (obj != null)
             {
-                obj.LocationName = entity.LocationName;
+                obj.TypeName = entity.TypeName;
+                obj.Description=entity.Description;
                 obj.UpdatedAt = DateTime.Now;
                 obj.UpdatedBy = entity.UpdatedBy;
                 obj.IsActive = entity.IsActive;

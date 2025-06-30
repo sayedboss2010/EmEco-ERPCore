@@ -1,5 +1,7 @@
-﻿using ERP.Repository.Repositories.Maintenance;
+﻿using ERP.Repository.Repositories.Lookups;
+using ERP.Repository.Repositories.Maintenance;
 using ERP.Repository.Repositories.Menu;
+using ERP.Services.Lookups;
 using ERP.Services.Maintenance;
 using ERP.Services.Menu;
 using ERP.VM.ViewModels;
@@ -40,6 +42,13 @@ public static class DependencyInjection
 
         services.AddScoped<IGenericRepo<ClosingFaultFinIshedGroupVm>, ClosingFaultFinishedRepo>();
         services.AddScoped<IGenericService<ClosingFaultFinIshedGroupVm>, ClosingFaultFinishedService>();
+
+        services.AddScoped<IGenericRepo<LocationVm>, LocationRepo>();
+        services.AddScoped<IGenericService<LocationVm>, LocationService>();
+
+
+        services.AddScoped<IGenericRepo<EquipmentTypeVm>, EquipmentTypesRepo>();
+        services.AddScoped<IGenericService<EquipmentTypeVm>, EquipmentTypesService>();
 
         //Auto Mapper Configurations
         var mapperConfig = new MapperConfiguration(mc =>

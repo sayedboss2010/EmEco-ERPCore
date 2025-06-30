@@ -12,8 +12,10 @@ public class MappingProfile : Profile
     {
         // Add as many of these lines as you need to map your objects
        CreateMap<PR_User, PrUserVm>().ReverseMap();
+        CreateMap<Location, LocationVm>().ReverseMap();
+        CreateMap<EquipmentType, EquipmentTypeVm>().ReverseMap();
 
-       
+
 
         //srored result classes
         CreateMap<GetAllEmployeesResult, GetAllEmployeesResultVm>().ReverseMap();

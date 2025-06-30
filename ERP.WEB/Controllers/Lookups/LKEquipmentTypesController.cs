@@ -5,11 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ERP.WEB.Controllers.Lookups
 {
-    public class LKLocationsController : Controller
+    public class LKEquipmentTypesController : Controller
     {
-        private readonly IGenericService<LocationVm> _LKloc;
+        private readonly IGenericService<EquipmentTypeVm> _LKloc;
 
-        public LKLocationsController(IGenericService<LocationVm> LKloc)
+        public LKEquipmentTypesController(IGenericService<EquipmentTypeVm> LKloc)
         {
             _LKloc = LKloc;
         }
@@ -26,25 +26,26 @@ namespace ERP.WEB.Controllers.Lookups
 
             var isAjax = Request.Headers["X-Requested-With"] == "XMLHttpRequest";
             return isAjax
-            ? (ActionResult)PartialView("_PartialAllLKLocation", lst)
+            ? (ActionResult)PartialView("_PartialAllLKLEquipmentType", lst)
             : View(lst);
         }
 
-        public IActionResult Add(string arName)
+        public IActionResult Add(string arName, string description)
         {
-            LocationVm LocationVm = new()
+            EquipmentTypeVm EquipmentTypeVm = new()
             {
-                LocationID = 0,
-                LocationName = arName,             
+                EquipmentTypeID = 0,
+                TypeName = arName,
+                Description= description,
                 CreatedBy = int.Parse(Request.Cookies.FirstOrDefault(c => c.Key == "UserId").Value)
             };
 
-            if (!_LKloc.CheckExist(LocationVm))
+            if (!_LKloc.CheckExist(EquipmentTypeVm))
             {
                 return Json(-1);
             }
 
-            return Json(_LKloc.Add(LocationVm));
+            return Json(_LKloc.Add(EquipmentTypeVm));
         }
 
         public IActionResult GetById(int id)
@@ -52,21 +53,22 @@ namespace ERP.WEB.Controllers.Lookups
             return Json(_LKloc.Find(id));
         }
 
-        public IActionResult Edit(int id, string arName)
+        public IActionResult Edit(int id, string arName, string description)
         {
-            LocationVm LocationVm = new()
+            EquipmentTypeVm EquipmentTypeVm = new()
             {
-                LocationID = id,
-                LocationName = arName,
+                EquipmentTypeID = id,
+                TypeName = arName,
+                Description=description,
                 UpdatedBy = int.Parse(Request.Cookies.FirstOrDefault(c => c.Key == "UserId").Value)
             };
 
-            if (!_LKloc.CheckExist(LocationVm))
+            if (!_LKloc.CheckExist(EquipmentTypeVm))
             {
                 return Json(-1);
             }
 
-            return Json(_LKloc.Update(LocationVm));
+            return Json(_LKloc.Update(EquipmentTypeVm));
         }
 
         public IActionResult Delete(int id)
@@ -78,7 +80,7 @@ namespace ERP.WEB.Controllers.Lookups
         public IActionResult Search(string term = "")
         {
             ViewBag.Search = term;
-            return PartialView("_PartialAllLKLocation", _LKloc.Search(term));
+            return PartialView("_PartialAllLKLEquipmentType", _LKloc.Search(term));
         }
 
         public IActionResult PrintData(string term = "")
@@ -119,12 +121,12 @@ namespace ERP.WEB.Controllers.Lookups
                 using (MemoryStream stream = new MemoryStream())
                 {
                     wb.SaveAs(stream);
-                    return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Location.xlsx");
+                    return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "EquipmentType.xlsx");
                 }
             }
         }
 
-        private System.Data.DataTable GetDataTableData(List<LocationVm> lst)
+        private System.Data.DataTable GetDataTableData(List<EquipmentTypeVm> lst)
         {
             var langCook = Request.Cookies.FirstOrDefault(c => c.Key == "lang").Value;
             var lang = string.IsNullOrEmpty(langCook) ? "ar" : langCook;
@@ -136,14 +138,15 @@ namespace ERP.WEB.Controllers.Lookups
 
             var row = dt.NewRow();
             row[0] = lang == "ar" ? "الاسم بالعربية" : "Arabic Name";
+            row[1] = lang == "ar" ? "الوصف" : "Description";
 
             dt.Rows.Add(row);
 
             foreach (var item in lst)
             {
                 row = dt.NewRow();
-                row[0] = item.LocationName;
-
+                row[0] = item.TypeName;
+                row[1] = item.Description;
                 dt.Rows.Add(row);
             }
 
