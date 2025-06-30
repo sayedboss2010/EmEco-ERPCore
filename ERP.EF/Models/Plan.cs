@@ -29,5 +29,7 @@ public partial class Plan
 
     public virtual ICollection<CheckListMaster> CheckListMasters { get; set; } = new List<CheckListMaster>();
 
+    public virtual ICollection<CheckList> CheckLists { get; set; } = new List<CheckList>();
+
     public virtual ICollection<EquipmentLocationPlan> EquipmentLocationPlans { get; set; } = new List<EquipmentLocationPlan>();
 }

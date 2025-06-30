@@ -106,7 +106,7 @@ $(document).on('click', '.edit-btn', function (e) {
             $.ajax({
                 type: "Get",
                 url: "/Checllist/datalist",
-                data: { LocationID: LocationID, EquipmentTypeID: EquipmentTypeID, EquipmentID: EquipmentID },
+                data: { LocationID: LocationID, EquipmentTypeID: EquipmentTypeID, EquipmentID: EquipmentID, PlanID: PlanID },
 
                 async: false,
                 success: function (res) {

@@ -148,7 +148,7 @@ namespace ERP.Repository.Repositories.Maintenance
             }
         }
 
-        public CheckListDataVM FinddataChecKlist(int LocationID, int EquipmentID, int EquipmentTypeID)
+        public CheckListDataVM FinddataChecKlist(int LocationID, int EquipmentID, int EquipmentTypeID, int PlanID)
         {
             try
             {
@@ -166,7 +166,7 @@ namespace ERP.Repository.Repositories.Maintenance
                }).ToList();
 
 
-                List<CheckListVm> dataCheckList = dbContext.CheckLists.Where(f => f.EquipmentTypeID == EquipmentTypeID && f.IsDeleted == false && f.IsActive == true)
+                List<CheckListVm> dataCheckList = dbContext.CheckLists.Where(f => f.EquipmentTypeID == EquipmentTypeID && f.IsDeleted == false && f.IsActive == true && f.PlanID== PlanID)
              .Select(f => new CheckListVm
              {
                  CheckListID = f.CheckListID,

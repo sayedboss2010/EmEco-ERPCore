@@ -18,7 +18,7 @@ namespace ERP.Services.Maintenance
 
         IList<CustomOption> GetListDropPlan();
 
-        CheckListDataVM FinddataChecKlist(int LocationID, int EquipmentID, int EquipmentTypeID);
+        CheckListDataVM FinddataChecKlist(int LocationID, int EquipmentID, int EquipmentTypeID, int PlanID);
 
         long Add(CheckListMasterVm entity);
 

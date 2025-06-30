@@ -46,10 +46,10 @@ namespace ERP.WEB.Controllers.Maintenance
         }
 
         [HttpGet]
-        public IActionResult datalist(int LocationID, int EquipmentTypeID, int EquipmentID)
+        public IActionResult datalist(int LocationID, int EquipmentTypeID, int EquipmentID,int PlanID)
         {
            
-           var data = _Check.FinddataChecKlist(LocationID, EquipmentID, EquipmentTypeID);
+           var data = _Check.FinddataChecKlist(LocationID, EquipmentID, EquipmentTypeID, PlanID);
             return Json(new { equipment= data.EquipmentLocationVm, checklist = data.CheckListVm });
        }
 

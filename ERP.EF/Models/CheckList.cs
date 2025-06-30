@@ -12,6 +12,8 @@ public partial class CheckList
 
     public int? EquipmentTypeID { get; set; }
 
+    public int PlanID { get; set; }
+
     public string CheckItem { get; set; }
 
     public bool? IsRequired { get; set; }
@@ -31,4 +33,6 @@ public partial class CheckList
     public virtual ICollection<CheckListMaster> CheckListMasters { get; set; } = new List<CheckListMaster>();
 
     public virtual EquipmentType EquipmentType { get; set; }
+
+    public virtual Plan Plan { get; set; }
 }

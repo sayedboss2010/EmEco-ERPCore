@@ -79,7 +79,7 @@ namespace ERP.Services.Lookups
         {
             try
             {
-                return loc.GetListDrop();
+                return _Loc.GetListDrop();
             }
             catch (Exception)
             {

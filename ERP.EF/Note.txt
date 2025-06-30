@@ -6,7 +6,7 @@ Scaffold-DbContext "Server=.;Database=PreventiveMaintenanceDB;Trusted_Connection
 
 
 
-Scaffold-DbContext "Server=.;Database=PreventiveMaintenanceDB;Trusted_Connection=True;TrustServerCertificate=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Context ErpDbContext  -UseDatabaseNames -Force
+Scaffold-DbContext "Server=DESKTOP-Q6F5MAU\SQLEXPRESS;Database=PreventiveMaintenanceDB;Trusted_Connection=True;TrustServerCertificate=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Context ErpDbContext  -UseDatabaseNames -Force
 
     public virtual DbSet<DataToExcel> DataToExcels { get; set; }
 

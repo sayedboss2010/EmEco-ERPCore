@@ -24,9 +24,9 @@ namespace ERP.Services.Maintenance
             return _check.Add(entity);
         }
 
-        public CheckListDataVM FinddataChecKlist(int LocationID, int EquipmentID, int EquipmentTypeID)
+        public CheckListDataVM FinddataChecKlist(int LocationID, int EquipmentID, int EquipmentTypeID, int PlanID)
         {
-            return _check.FinddataChecKlist(LocationID, EquipmentID, EquipmentTypeID);
+            return _check.FinddataChecKlist(LocationID, EquipmentID, EquipmentTypeID, PlanID);
         }
 
         public IList<CustomOption> GetListDropEquipment(int EquipmentTypeID)

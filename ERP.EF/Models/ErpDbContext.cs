@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace ERP.EF.Models;
 
@@ -57,14 +58,25 @@ public partial class ErpDbContext : DbContext
     public virtual DbSet<StoreInventory> StoreInventories { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=.;Database=PreventiveMaintenanceDB;Trusted_Connection=True;TrustServerCertificate=True;");
+    {
+        try
+        {
+            string c = Directory.GetCurrentDirectory();
+            IConfigurationRoot configuration =
+                new ConfigurationBuilder().SetBasePath(c).AddJsonFile("appsettings.json").Build();
 
+            optionsBuilder.UseSqlServer(configuration.GetConnectionString("DBConnection"));
+        }
+        catch
+        {
+            //ignore
+        }
+    }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<CheckList>(entity =>
         {
-            entity.HasKey(e => e.CheckListID).HasName("PK__CheckLis__56318361EAAC08C3");
+            entity.HasKey(e => e.CheckListID).HasName("PK__CheckLis__56318361EB1AD802");
 
             entity.ToTable("CheckList", tb => tb.HasComment("CheckList معدة"));
 
@@ -79,12 +91,17 @@ public partial class ErpDbContext : DbContext
 
             entity.HasOne(d => d.EquipmentType).WithMany(p => p.CheckLists)
                 .HasForeignKey(d => d.EquipmentTypeID)
-                .HasConstraintName("FK__CheckList__Equip__0D7A0286");
+                .HasConstraintName("FK__CheckList__Equip__09A971A2");
+
+            entity.HasOne(d => d.Plan).WithMany(p => p.CheckLists)
+                .HasForeignKey(d => d.PlanID)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_CheckList_Plan");
         });
 
         modelBuilder.Entity<CheckListMaster>(entity =>
         {
-            entity.HasKey(e => e.CheckListMasterID).HasName("PK__CheckLis__F424F241F95F31EE");
+            entity.HasKey(e => e.CheckListMasterID).HasName("PK__CheckLis__F424F241C760DF99");
 
             entity.ToTable("CheckListMaster");
 
@@ -106,7 +123,7 @@ public partial class ErpDbContext : DbContext
 
             entity.HasOne(d => d.CheckList).WithMany(p => p.CheckListMasters)
                 .HasForeignKey(d => d.CheckListID)
-                .HasConstraintName("FK__CheckList__Check__0E6E26BF");
+                .HasConstraintName("FK__CheckList__Check__0A9D95DB");
 
             entity.HasOne(d => d.EquipmentLocation).WithMany(p => p.CheckListMasters)
                 .HasForeignKey(d => d.EquipmentLocationID)
@@ -150,7 +167,7 @@ public partial class ErpDbContext : DbContext
 
         modelBuilder.Entity<Employee>(entity =>
         {
-            entity.HasKey(e => e.EmployeeID).HasName("PK__Employee__7AD04FF180713E56");
+            entity.HasKey(e => e.EmployeeID).HasName("PK__Employee__7AD04FF1B9D440ED");
 
             entity.ToTable(tb => tb.HasComment("الموظفين"));
 
@@ -168,21 +185,21 @@ public partial class ErpDbContext : DbContext
 
         modelBuilder.Entity<EmployeePermission>(entity =>
         {
-            entity.HasKey(e => e.EmployeePermissionID).HasName("PK__Employee__E736E77D416B2E2A");
+            entity.HasKey(e => e.EmployeePermissionID).HasName("PK__Employee__E736E77D5AE59705");
 
             entity.HasOne(d => d.Permission).WithMany(p => p.EmployeePermissions)
                 .HasForeignKey(d => d.PermissionID)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__EmployeeP__Permi__1332DBDC");
+                .HasConstraintName("FK__EmployeeP__Permi__0F624AF8");
         });
 
         modelBuilder.Entity<Equipment>(entity =>
         {
-            entity.HasKey(e => e.EquipmentID).HasName("PK__Equipmen__34474599593CD184");
+            entity.HasKey(e => e.EquipmentID).HasName("PK__Equipmen__34474599A1A42014");
 
             entity.ToTable(tb => tb.HasComment("المعدات"));
 
-            entity.HasIndex(e => e.SerialNumber, "UQ__Equipmen__048A0008EA483302").IsUnique();
+            entity.HasIndex(e => e.SerialNumber, "UQ__Equipmen__048A0008882D707A").IsUnique();
 
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
@@ -195,7 +212,7 @@ public partial class ErpDbContext : DbContext
 
             entity.HasOne(d => d.EquipmentType).WithMany(p => p.Equipment)
                 .HasForeignKey(d => d.EquipmentTypeID)
-                .HasConstraintName("FK__Equipment__Equip__14270015");
+                .HasConstraintName("FK__Equipment__Equip__10566F31");
         });
 
         modelBuilder.Entity<EquipmentLocation>(entity =>
@@ -233,7 +250,7 @@ public partial class ErpDbContext : DbContext
 
         modelBuilder.Entity<EquipmentLocationPlan>(entity =>
         {
-            entity.HasKey(e => e.EquipmentLocationPlanID).HasName("PK__Equipmen__10EBEE7F72831C81");
+            entity.HasKey(e => e.EquipmentLocationPlanID).HasName("PK__Equipmen__10EBEE7F683279BA");
 
             entity.ToTable("EquipmentLocationPlan");
 
@@ -257,7 +274,7 @@ public partial class ErpDbContext : DbContext
 
         modelBuilder.Entity<EquipmentTransfer>(entity =>
         {
-            entity.HasKey(e => e.TransferID).HasName("PK__Equipmen__9549017144E51C1B");
+            entity.HasKey(e => e.TransferID).HasName("PK__Equipmen__954901718EE3B784");
 
             entity.ToTable("EquipmentTransfer", tb => tb.HasComment("تاريخ نقل المعدات"));
 
@@ -280,12 +297,12 @@ public partial class ErpDbContext : DbContext
 
             entity.HasOne(d => d.ResponsiblePerson).WithMany(p => p.EquipmentTransfers)
                 .HasForeignKey(d => d.ResponsiblePersonID)
-                .HasConstraintName("FK__Equipment__Respo__1AD3FDA4");
+                .HasConstraintName("FK__Equipment__Respo__17036CC0");
         });
 
         modelBuilder.Entity<EquipmentType>(entity =>
         {
-            entity.HasKey(e => e.EquipmentTypeID).HasName("PK__Equipmen__554726DCFAFAF56D");
+            entity.HasKey(e => e.EquipmentTypeID).HasName("PK__Equipmen__554726DC0E31F506");
 
             entity.ToTable(tb => tb.HasComment("نوع المعدة"));
 
@@ -301,7 +318,7 @@ public partial class ErpDbContext : DbContext
 
         modelBuilder.Entity<Location>(entity =>
         {
-            entity.HasKey(e => e.LocationID).HasName("PK__Location__E7FEA477A48108C4");
+            entity.HasKey(e => e.LocationID).HasName("PK__Location__E7FEA4776B9CDB63");
 
             entity.ToTable(tb => tb.HasComment("الموقع"));
 
@@ -324,7 +341,7 @@ public partial class ErpDbContext : DbContext
 
         modelBuilder.Entity<Permission>(entity =>
         {
-            entity.HasKey(e => e.PermissionID).HasName("PK__Permissi__EFA6FB0FB0B9122C");
+            entity.HasKey(e => e.PermissionID).HasName("PK__Permissi__EFA6FB0F8B0D429F");
 
             entity.Property(e => e.Description).HasMaxLength(100);
             entity.Property(e => e.PermissionName).HasMaxLength(100);
@@ -332,22 +349,22 @@ public partial class ErpDbContext : DbContext
 
         modelBuilder.Entity<PermissionScreen>(entity =>
         {
-            entity.HasKey(e => e.PermissionScreenID).HasName("PK__Permissi__A9C86A8AB7713A15");
+            entity.HasKey(e => e.PermissionScreenID).HasName("PK__Permissi__A9C86A8A6ADE5DE1");
 
             entity.HasOne(d => d.Permission).WithMany(p => p.PermissionScreens)
                 .HasForeignKey(d => d.PermissionID)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Permissio__Permi__1BC821DD");
+                .HasConstraintName("FK__Permissio__Permi__17F790F9");
 
             entity.HasOne(d => d.Screen).WithMany(p => p.PermissionScreens)
                 .HasForeignKey(d => d.ScreenID)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Permissio__Scree__1CBC4616");
+                .HasConstraintName("FK__Permissio__Scree__18EBB532");
         });
 
         modelBuilder.Entity<Plan>(entity =>
         {
-            entity.HasKey(e => e.PlanID).HasName("PK__Plan__755C22D75E564CC9");
+            entity.HasKey(e => e.PlanID).HasName("PK__Plan__755C22D7F7727A3C");
 
             entity.ToTable("Plan");
 
@@ -362,7 +379,7 @@ public partial class ErpDbContext : DbContext
 
         modelBuilder.Entity<Screen>(entity =>
         {
-            entity.HasKey(e => e.ScreenID).HasName("PK__Screens__0AB60F856114CF10");
+            entity.HasKey(e => e.ScreenID).HasName("PK__Screens__0AB60F85ABAA9962");
 
             entity.Property(e => e.Description).HasMaxLength(100);
             entity.Property(e => e.ScreenName).HasMaxLength(100);
@@ -396,7 +413,7 @@ public partial class ErpDbContext : DbContext
 
         modelBuilder.Entity<SparePartType>(entity =>
         {
-            entity.HasKey(e => e.SparePartTypeID).HasName("PK__SparePar__9773A288F3F67EDA");
+            entity.HasKey(e => e.SparePartTypeID).HasName("PK__SparePar__9773A2881EE1E0FB");
 
             entity.ToTable(tb => tb.HasComment("نوع قطع الغيار"));
 
@@ -431,7 +448,7 @@ public partial class ErpDbContext : DbContext
 
         modelBuilder.Entity<StoreInventory>(entity =>
         {
-            entity.HasKey(e => e.StoreInventoryID).HasName("PK__StoreInv__314E77A5FF7B2140");
+            entity.HasKey(e => e.StoreInventoryID).HasName("PK__StoreInv__314E77A5D91D627E");
 
             entity.ToTable("StoreInventory", tb => tb.HasComment("مخزن وقطع الغيار"));
 
